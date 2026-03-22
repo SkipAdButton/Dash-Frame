@@ -20,7 +20,7 @@ body {
     height: 768px;
     top: calc(50vh - 384px);
     left: calc(50vw - 680px);
-    background-image: linear-gradient(to bottom right, #5B7EAA, #E84D41 150%);
+    background-image: linear-gradient(135deg, #8A2BE2, #00FF7F);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,8 +41,15 @@ body {
 #startScreen h2{
     color: white;
     font-size: 75px;
-    margin-top: 100px;
-    margin-bottom: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+#htp {
+    color: white;
+    font-size: 60px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-style: italic;
 }
 #startScreen h3{
@@ -56,10 +63,52 @@ body {
 }
 #startScreen h2:hover{
     text-decoration: underline;
+    cursor: pointer;
 }
 #startScreen h4:hover{
     text-decoration: underline;
+    cursor: pointer;
 }
 .hide{
     visibility: hidden;
+}
+
+#htpMenu {
+    position: absolute;
+    width: 1360px;
+    height: 768px;
+    top: calc(50vh - 384px);
+    left: calc(50vw - 680px);
+    background-image: linear-gradient(90deg, #222277, #00f0ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+#htpScreen{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    gap: 25px;
+}
+#htpScreen h1{
+    color: white;
+    font-size: 90px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+#htpScreen h2{
+    color: white;
+    font-size: 75px;
+    font-style: italic;
+}
+#htpScreen h2:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+#htpScreen h3{
+    color: white;
+    font-size: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
