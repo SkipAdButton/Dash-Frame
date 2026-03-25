@@ -26,8 +26,11 @@ class Projectile {
 }
 class Diamond {
     constructor() {
-        this.x = Math.floor(Math.random() * 1160) + 101
-        this.y = Math.floor(Math.random() * 568) + 101
+        do {
+            this.x = Math.floor(Math.random() * 1160) + 101
+            this.y = Math.floor(Math.random() * 568) + 101
+            this.distance = (player.x - this.x) ** 2 + (player.y - this.y) ** 2
+        } while (this.distance < 400000);
         this.color = "#dddd33"
     }
 }
@@ -79,7 +82,7 @@ class Charger {
         }
     }
 }
-class Rico {
+class Ringmaster {
     constructor(maxHealth, speed, fireRate) {
         this.maxHealth = maxHealth;
         this.health = maxHealth
@@ -148,9 +151,9 @@ class Beyblade {
                 if (this.health <= this.maxHealth / 2) {
                     projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.PI + this.spin, 600, 10))
                 }
-                this.spin += .08; // 0.1 originally
-                if (this.spin > Math.PI) {
-                    this.spin == 0
+                this.spin += Math.PI * 4 * delta; // 0.1 originally
+                if (this.spin > Math.PI * 2) {
+                    this.spin = 0
                 }
                 this.lastShot = this.fireRate
             } else {
@@ -159,7 +162,7 @@ class Beyblade {
         }
     }
 }
-class Wizard {
+class Rainman {
     constructor(maxHealth, speed, fireRate) {
         this.maxHealth = maxHealth;
         this.health = maxHealth
@@ -198,7 +201,7 @@ class Wizard {
     }
 }
 
-class King {
+class Tsunami {
     constructor(maxHealth, speed, fireRate, fireRate2) {
         console.log(fireRate)
         console.log(fireRate2)
@@ -213,7 +216,7 @@ class King {
         this.x = 680 - 32.5
         this.y = 384 - 32.5
         this.size = 70
-        this.color = "#BF40BF"
+        this.color = "#007c82"
         this.random = Math.floor(Math.random() * 4) + 1
     }
     move(delta) {
@@ -271,6 +274,182 @@ class King {
 
     }
 }
+class Starfish {
+    constructor(maxHealth, speed, fireRate) {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth
+        this.speed = speed;
+        this.fireRate = fireRate;
+
+        this.spin = 0
+        this.lastShot = fireRate;
+        this.x = 680 - 32.5
+        this.y = 384 - 32.5
+        this.size = 35
+        this.color = "#FF7F50"
+    }
+    move(delta) {
+        if (this.health > 0) {
+            this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
+            this.x += Math.cos(this.angle) * (this.speed * delta)
+            this.y += Math.sin(this.angle) * (this.speed * delta)
+        }
+    }
+    attack(delta) {
+        if (this.health > 0) {
+            if (this.lastShot < 0) {
+                if (this.health > this.maxHealth / 2) {
+                    for (let i = 0; i < Math.PI * 2; i += Math.PI * 2 / 5) {
+                        projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.PI / -2 + i, 600, 10))
+                    }
+                } else {
+                    for (let i = 0; i < Math.PI * 2; i += Math.PI * 2 / 6) {
+                        projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.PI + i + this.spin, 600, 10))
+                    }
+                }
+                this.spin += .05; // 0.1 originally
+                if (this.spin > Math.PI) {
+                    this.spin == 0
+                }
+                this.lastShot = this.fireRate
+            } else {
+                this.lastShot -= delta
+            }
+        }
+    }
+}
+class Harbringer {
+    constructor(maxHealth, speed, fireRate, fireRate2, fireRate3, fireRate4, fireRate5) {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth
+        this.speed = speed;
+        this.fireRate = fireRate;
+        this.lastShot = fireRate;
+        this.swapUD = false
+        this.swapRL = false
+        this.fireRate2 = fireRate2;
+        this.lastShot2 = fireRate2;
+        this.fireRate3 = fireRate3;
+        this.lastShot3 = fireRate3;
+        this.fireRate4 = fireRate4;
+        this.lastShot4 = fireRate4;
+        this.fireRate5 = fireRate5;
+        this.lastShot5 = fireRate5;
+
+        this.phase = 1;
+
+        this.spin = 0
+        this.x = 680 - 32.5
+        this.y = 384 - 32.5
+        this.size = 90
+    }
+    get color() {
+        if (this.phase == 2) {
+            return `rgb(${Math.floor(Math.random() * 255)} ${Math.floor(Math.random() * 255)} ${Math.floor(Math.random() * 255)})`
+        } else {
+            return `rgb(${Math.floor(Math.random() * 100)} 0 0 )`
+        }
+    }
+    move(delta) {
+        if (this.health > 0) {
+            this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
+            this.x += Math.cos(this.angle) * (this.speed * delta)
+            this.y += Math.sin(this.angle) * (this.speed * delta)
+        }
+    }
+    attack(delta) {
+        if (this.health > 0) {
+            if (this.lastShot < 0) {
+                if (!this.swapUD) {
+                    for (let i = 0; i <= canvas.width; i += canvas.width / 60) {
+                        projectiles.push(new Projectile(i + canvas.width / 120, 0, Math.PI / 2, 384, 10))
+                    }
+                    this.swapUD = true;
+                } else {
+                    for (let i = 0; i <= canvas.width; i += canvas.width / 60) {
+                        projectiles.push(new Projectile(i + canvas.width / 120, canvas.height, Math.PI / -2, 384, 10))
+                    }
+                    this.swapUD = false;
+                }
+
+                this.lastShot = this.fireRate
+            } else {
+                this.lastShot -= delta
+            }
+
+            if (this.lastShot2 < 0) {
+                if (!this.swapRL) {
+                    for (let i = 0; i <= canvas.height; i += canvas.height / 35) {
+                        projectiles.push(new Projectile(canvas.width, i + canvas.height / 70, Math.PI, 453.333, 10))
+                    }
+                    this.swapRL = true;
+                } else {
+                    for (let i = 0; i <= canvas.height; i += canvas.height / 35) {
+                        projectiles.push(new Projectile(0, i + canvas.height / 70, 0, 453.333, 10))
+                    }
+                    this.swapRL = false;
+                }
+                this.lastShot2 = this.fireRate2
+            } else {
+                this.lastShot2 -= delta
+            }
+
+            if (this.lastShot3 < 0) {
+                projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), this.spin, 600, 10))
+                if (this.phase == 2) {
+                    projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.PI + this.spin, 600, 10))
+                }
+                this.spin += Math.PI * 4 * delta; // 0.1 originally
+                if (this.spin > Math.PI * 2) {
+                    this.spin = 0
+                }
+                this.lastShot3 = this.fireRate3
+            } else {
+                this.lastShot3 -= delta
+            }
+
+            if (this.lastShot4 < 0) {
+                for (let i = 0; i < Math.PI * 2; i += Math.PI / 15) {
+                    projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2)) + i, 400, 10))
+                }
+                if (this.phase == 2) {
+                    for (let i = 0; i < Math.PI * 2; i += Math.PI / 5) {
+                        projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2)) + i, 200, 10))
+                    }
+                }
+                this.lastShot4 = this.fireRate4
+            } else {
+                this.lastShot4 -= delta
+            }
+
+            if (this.lastShot5 < 0) {
+                projectiles.push(new Projectile(Math.random() * canvas.width, 10, Math.PI / 2, Math.random() * 500 + 100, 10))
+                if (this.phase == 2) {
+                    projectiles.push(new Projectile(Math.random() * canvas.width, 10, Math.PI / 2, Math.random() * 500 + 100, 10))
+                    projectiles.push(new Projectile(Math.random() * canvas.width, 10, Math.PI / 2, Math.random() * 500 + 100, 10))
+                }
+                this.lastShot5 = this.fireRate5
+            } else {
+                this.lastShot5 -= delta
+            }
+        }
+    }
+    phaseSwitch() {
+        projectiles.splice(0, projectiles.length)
+        setTimeout(e => {
+            this.phase++
+            for (let i = 0; i < 250; i++) {
+                setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 800, .6, 20, currentBoss.color)) }, 10 + (10 * i))
+            }
+            bossPhaseSound.play()
+            shake(80, 250)
+            setTimeout(e => {
+                this.health = this.maxHealth
+                diamonds.push(new Diamond())
+            }, 3000)
+        }, 5000)
+    }
+}
 
 
 // projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2)), 600, 10))
@@ -284,20 +463,31 @@ const startScreen = document.getElementById("startScreen")
 const htpScreen = document.getElementById("htpScreen")
 const menu = document.getElementById("menu")
 const htpMenu = document.getElementById("htpMenu")
+const attemptCounter = document.getElementById("attemptCounter")
 const bossList = [
-    "CHARGER", "BEYBLADE", "RICO", "WIZARD", "KING"
+    "CHARGER", "BEYBLADE", "STARFISH", "RINGMASTER", "RAINMAN", "TSUNAMI", "HARBRINGER"
 ]
 const keys = {}
 const player = new Player(0, 400)
 const projectiles = []
 const diamonds = []
 const particles = []
+const attempts = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+}
 
 const enableSound = new Audio("audio/enableSound.mp3")
 const playerDeathSound = new Audio("audio/playerDeathSound.mp3")
 const playerDashSound = new Audio("audio/playerDashSound.mp3")
 const bossHurtSound = new Audio("audio/bossHurtSound.mp3")
 const bossDeathSound = new Audio("audio/bossDeathSound.mp3")
+const bossPhaseSound = new Audio("audio/bossPhaseSound.mp3")
 // Vars
 let lastTime = 0; // time on last frame
 let currentBoss;
@@ -308,11 +498,11 @@ let globalOffsetY = 0;
 // Event Listeners
 document.addEventListener("keydown", (e) => {
     keys[e.key.toLowerCase()] = true;
-
 });
 document.addEventListener("keyup", (e) => {
     keys[e.key.toLowerCase()] = false;
-}); // Allows Audio
+});
+// Allows Audio
 document.addEventListener("click", (e) => {
     enableSound.play()
     enableSound.pause()
@@ -327,11 +517,13 @@ function cycleBoss() {
         selectedBoss = 0
         bossSelect.textContent = bossList[selectedBoss]
     }
+    attemptCounter.innerHTML = attempts[selectedBoss]
+    console.log(attempts)
     menu.className = ""
-    if (selectedBoss < 4) {
+    if (selectedBoss < 6) {
         menu.classList.add("beginner")
-    } else if (selectedBoss < 10) {
-        menu.classList.add("hard")
+    } else {
+        menu.classList.add("impossible")
     }
 }
 
@@ -341,17 +533,25 @@ function start() { // IMPORTANT
     } else if (selectedBoss == 1) {
         spawnBoss(new Beyblade(10, 170, .02))
     } else if (selectedBoss == 2) {
-        spawnBoss(new Rico(10, 150, 1.8))
+        spawnBoss(new Starfish(10, 130, .25))
     } else if (selectedBoss == 3) {
-        spawnBoss(new Wizard(10, 120, .2))
+        spawnBoss(new Ringmaster(10, 150, 1.8))
     } else if (selectedBoss == 4) {
-        spawnBoss(new King(10, 135, 1.5, .5))
+        spawnBoss(new Rainman(10, 120, .2))
+    } else if (selectedBoss == 5) {
+        spawnBoss(new Tsunami(10, 135, 1.8, .5))
+    } else if (selectedBoss == 6) {
+        spawnBoss(new Harbringer(10, 165, 2, 3, .05, 5, .5))
     }
+    attempts[selectedBoss] += 1
+    attemptCounter.innerHTML = attempts[selectedBoss]
     player.health = 1
     player.x = 50
     player.y = 50
     projectiles.splice(0, projectiles.length)
     menu.classList.add("hide")
+    diamonds.splice(0, diamonds.length)
+    diamonds.push(new Diamond())
 }
 
 function end() {
@@ -416,13 +616,13 @@ function draw() {
         ctx.fillStyle = currentBoss.color
         ctx.fillRect(currentBoss.x + globalOffsetX, currentBoss.y + globalOffsetY, currentBoss.size, currentBoss.size)
         // Boss Health Bar=
-        ctx.fillStyle = diamonds[0].color;
+        ctx.fillStyle = "#dddd33";
         let barLength = (canvas.width - (20 * (currentBoss.maxHealth + 1))) / currentBoss.maxHealth
         for (let i = 0; i < currentBoss.maxHealth; i++) {
             if (i + 1 > currentBoss.health) {
                 ctx.fillStyle = "#151517"
             } else {
-                ctx.fillStyle = diamonds[0].color;
+                ctx.fillStyle = "#dddd33";
             }
             ctx.fillRect((20 * (i + 1)) + (barLength * i), 750, barLength, 10);
         }
@@ -433,10 +633,10 @@ function draw() {
 // Player
 function playerMovement(delta) {
     if (!player.dashing && player.health > 0) {
-        if (keys.w) player.y -= player.speed * delta
-        if (keys.s) player.y += player.speed * delta
-        if (keys.a) player.x -= player.speed * delta
-        if (keys.d) player.x += player.speed * delta
+        if (keys.w || keys.arrowup) player.y -= player.speed * delta
+        if (keys.s || keys.arrowdown) player.y += player.speed * delta
+        if (keys.a || keys.arrowleft) player.x -= player.speed * delta
+        if (keys.d || keys.arrowright) player.x += player.speed * delta
     }
 
     if (player.x > canvas.width - 20) {
@@ -455,10 +655,10 @@ function playerMovement(delta) {
 
 function dash(delta) {
     if (keys[" "] && player.dashDirX == 0 && player.dashDirY == 0 && player.dashCoolDown <= 0 && player.health > 0 && currentBoss != undefined) {
-        if (keys.w) player.dashDirY -= 1500
-        if (keys.s) player.dashDirY += 1500
-        if (keys.a) player.dashDirX -= 1500
-        if (keys.d) player.dashDirX += 1500
+        if (keys.w || keys.arrowup) player.dashDirY -= 1500
+        if (keys.s || keys.arrowdown) player.dashDirY += 1500
+        if (keys.a || keys.arrowleft) player.dashDirX -= 1500
+        if (keys.d || keys.arrowright) player.dashDirX += 1500
     }
     if (player.dashDirX != 0 || player.dashDirY != 0) {
         player.dashing = true
@@ -544,15 +744,24 @@ function pickupDiamond() {
         if (player.x + 10 > diamonds[i].x - 20 && player.x + 10 < diamonds[i].x + 20 && player.y + 10 > diamonds[i].y - 20 && player.y + 10 < diamonds[i].y + 20) {
             currentBoss.health--
             diamonds.splice(i, 1)
-            spawnDiamond()
+            if (currentBoss.phase == 1 && currentBoss.health == 0) { } else { spawnDiamond() }
             shake(10, 10)
             if (currentBoss.health == 0) {
-                for (let i = 0; i < 120; i++) {
-                    setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
+                if (selectedBoss == 6 && currentBoss.phase == 1) {
+                    for (let i = 0; i < 120; i++) {
+                        setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
+                    }
+                    bossDeathSound.play()
+                    shake(30, 150)
+                    currentBoss.phaseSwitch()
+                } else {
+                    for (let i = 0; i < 120; i++) {
+                        setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
+                    }
+                    bossDeathSound.play()
+                    shake(30, 150)
+                    end()
                 }
-                bossDeathSound.play()
-                shake(30, 150)
-                end()
             } else {
                 bossHurtSound.play()
             }
@@ -591,6 +800,7 @@ function shake(intensity, length) {
 
 // Delta time / Loop functions
 function loop(time) {
+
     let delta = time - lastTime
     delta = delta / 1000
     delta = Math.min(delta, 0.05);
@@ -613,3 +823,5 @@ function loop(time) {
     requestAnimationFrame(loop)
 }
 requestAnimationFrame(loop)
+
+// document.getElementById("ID").style.top += "25px";
