@@ -99,7 +99,7 @@ body {
     height: 768px;
     top: calc(50vh - 384px);
     left: calc(50vw - 680px);
-    background-image: linear-gradient(90deg, #00f0ff, #222277);
+    background-image: linear-gradient(135deg, #4da3ff, #1e3a8a);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -107,29 +107,61 @@ body {
 }
 #htpScreen{
     display: flex;
-    align-items: center;
+    align-items:normal;
     justify-content: space-evenly;
-    flex-direction: column;
+    flex-direction: row;
     gap: 25px;
 }
 #htpScreen h1{
     color: white;
-    font-size: 90px;
+    font-size: 73px;
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-decoration: underline dotted;
 }
 #htpScreen h2{
     color: white;
-    font-size: 75px;
+    font-size: 85px;
     font-style: italic;
 }
 #htpScreen h2:hover{
     text-decoration: underline;
     cursor: pointer;
-    font-size: 85px;
+    font-size: 135px;
 }
 #htpScreen h3{
     color: white;
-    font-size: 40px;
+    font-size: 50px;
     margin-top: 10px;
     margin-bottom: 10px;
+    font-style: italic;
+}
+#htpScreen h3:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 70px;
+}
+#htpq1 {
+    width: 680px;
+    height: 768px;
+    padding: 100px; 
+    top: calc(50vh - 384px);
+    left: calc(50vw - 680px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    flex-direction: column;
+} 
+#htpq2{
+    width: 680px;
+    height: 768px;
+    padding: 100px; 
+    top: calc(50vh - 384px);
+    left: calc(50vw - 680px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+    
 }
