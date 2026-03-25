@@ -542,7 +542,7 @@ function start() { // IMPORTANT
     } else if (selectedBoss == 5) {
         spawnBoss(new Tsunami(10, 135, 1.8, .5))
     } else if (selectedBoss == 6) {
-        spawnBoss(new Harbinger(1, 165, 2, 3, .05, 5, .5))
+        spawnBoss(new Harbinger(10, 165, 2, 3, .05, 5, .5))
     }
     attempts[selectedBoss] += 1
     attemptCounter.innerHTML = attempts[selectedBoss]
