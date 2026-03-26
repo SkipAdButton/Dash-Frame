@@ -362,12 +362,12 @@ class Harbinger {
             if (this.lastShot < 0) {
                 if (!this.swapUD) {
                     for (let i = 0; i <= canvas.width; i += canvas.width / 60) {
-                        projectiles.push(new Projectile(i + canvas.width / 120, 0, Math.PI / 2, 384, 10))
+                        projectiles.push(new Projectile(i + canvas.width / 120, 0, Math.PI / 2, canvas.height/4, 10))
                     }
                     this.swapUD = true;
                 } else {
                     for (let i = 0; i <= canvas.width; i += canvas.width / 60) {
-                        projectiles.push(new Projectile(i + canvas.width / 120, canvas.height, Math.PI / -2, 384, 10))
+                        projectiles.push(new Projectile(i + canvas.width / 120, canvas.height, Math.PI / -2, canvas.height/4, 10))
                     }
                     this.swapUD = false;
                 }
@@ -378,14 +378,14 @@ class Harbinger {
             }
 
             if (this.lastShot2 < 0) {
-                if (!this.swapRL) {
+                if (!this.swapRL) { 
                     for (let i = 0; i <= canvas.height; i += canvas.height / 35) {
-                        projectiles.push(new Projectile(canvas.width, i + canvas.height / 70, Math.PI, 453.333, 10))
+                        projectiles.push(new Projectile(canvas.width, i + canvas.height / 70, Math.PI, canvas.width/5, 10))
                     }
                     this.swapRL = true;
                 } else {
                     for (let i = 0; i <= canvas.height; i += canvas.height / 35) {
-                        projectiles.push(new Projectile(0, i + canvas.height / 70, 0, 453.333, 10))
+                        projectiles.push(new Projectile(0, i + canvas.height / 70, 0, canvas.width/5, 10))
                     }
                     this.swapRL = false;
                 }
@@ -542,7 +542,7 @@ function start() { // IMPORTANT
     } else if (selectedBoss == 5) {
         spawnBoss(new Tsunami(10, 135, 1.8, .5))
     } else if (selectedBoss == 6) {
-        spawnBoss(new Harbinger(10, 165, 2, 3, .05, 5, .5))
+        spawnBoss(new Harbinger(10, 165, 4, 5, .05, 5, .5))
     }
     attempts[selectedBoss] += 1
     attemptCounter.innerHTML = attempts[selectedBoss]
