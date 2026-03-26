@@ -151,7 +151,7 @@ class Beyblade {
                 if (this.health <= this.maxHealth / 2) {
                     projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.PI + this.spin, 600, 10))
                 }
-                this.spin += Math.PI/30; // 0.1 originally
+                this.spin += .1
                 if (this.spin > Math.PI * 2) {
                     this.spin = 0
                 }
