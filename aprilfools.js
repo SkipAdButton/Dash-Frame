@@ -653,23 +653,31 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.fillStyle = "#222223"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+	ctx.shadowColor = "rgba(0, 0, 0, 0.8)"; // glow color
+	ctx.shadowBlur = 20; // how strong the glow is
+
     // Particles
     for (let i = 0; i < particles.length; i++) {
+		ctx.shadowColor = particles[i].color; // glow color
         ctx.fillStyle = particles[i].color
         ctx.fillRect(particles[i].x + globalOffsetX, particles[i].y + globalOffsetY, particles[i].size, particles[i].size)
     }
     // Player
     if (player.health > 0) {
+		ctx.shadowColor = player.color; // glow color
         ctx.fillStyle = player.color
         ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, 20, 20)
     }
     // Player Dash Meter
+	ctx.shadowColor = "#669FB3"; // glow color
     ctx.fillStyle = "#669FB3"
     if (player.dashCoolDown > 0) {
         ctx.fillRect(player.x + (10 - player.dashCoolDown * 30) + globalOffsetX, player.y - 10 + globalOffsetY, player.dashCoolDown * 60, 5)
     }
     // Projectiles 
     for (let i = 0; i < projectiles.length; i++) {
+		ctx.shadowColor = currentBoss.color; // glow color
         ctx.fillStyle = currentBoss.color
         ctx.beginPath();
         ctx.arc(projectiles[i].x + globalOffsetX, projectiles[i].y + globalOffsetY, projectiles[i].size, 0, 2 * Math.PI);
@@ -681,6 +689,7 @@ function draw() {
         ctx.translate(diamonds[i].x, diamonds[i].y);
         ctx.rotate(Math.PI / 4);
 
+		ctx.shadowColor = diamonds[i].color; // glow color
         ctx.fillStyle = diamonds[i].color;
         ctx.fillRect(-5 + globalOffsetX, -5 + globalOffsetY, 10, 10);
 
@@ -688,6 +697,7 @@ function draw() {
     }
     // Boss
     if (currentBoss != undefined) {
+		ctx.shadowColor = currentBoss.color;
         ctx.fillStyle = currentBoss.color
         ctx.fillRect(currentBoss.x + globalOffsetX, currentBoss.y + globalOffsetY, currentBoss.size, currentBoss.size)
         // Boss Health Bar=
@@ -695,8 +705,10 @@ function draw() {
         let barLength = (canvas.width - (20 * (currentBoss.maxHealth + 1))) / currentBoss.maxHealth
         for (let i = 0; i < currentBoss.maxHealth; i++) {
             if (i + 1 > currentBoss.health) {
+				ctx.shadowColor = "#151517";
                 ctx.fillStyle = "#151517"
             } else {
+				ctx.shadowColor = "#dddd33";
                 ctx.fillStyle = "#dddd33";
             }
             ctx.fillRect((20 * (i + 1)) + (barLength * i), 750, barLength, 10);
