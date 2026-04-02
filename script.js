@@ -41,7 +41,7 @@ class Diamond {
             this.angle = Math.atan2(currentBoss.y + currentBoss.size / 2 - this.y + 6, currentBoss.x + currentBoss.size / 2 - this.x + 6)
             this.x += Math.cos(this.angle) * (this.flySpeed * delta)
             this.y += Math.sin(this.angle) * (this.flySpeed * delta)
-            this.flySpeed += 600 * delta
+            this.flySpeed += 1200 * delta
 
             for (let i = 0; i < diamonds.length; i++) {
                 if (this.x > currentBoss.x && this.x < currentBoss.x + currentBoss.size && this.y > currentBoss.y && this.y < currentBoss.y + currentBoss.size) {
@@ -670,7 +670,7 @@ function draw() {
     ctx.fillStyle = "#669FB3"
     ctx.strokeStyle = "#669FB3"
     if (player.dashCoolDown > 0) {
-        ctx.fillRect(player.x + (10 - 25) + globalOffsetX, player.y - 10 + globalOffsetY, player.dashCoolDown * 100, 5)
+        ctx.fillRect(player.x + (10 - 25) + globalOffsetX, player.y - 10 + globalOffsetY, 50 - player.dashCoolDown * 100, 5)
         ctx.strokeRect(player.x - 15 + globalOffsetX, player.y - 10 + globalOffsetY, 50, 5)
     }
     // Projectiles 
