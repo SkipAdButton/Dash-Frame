@@ -12,6 +12,7 @@ class Player {
         this.dashDirX = 0
         this.dashDirY = 0
         this.dashFrame = 0
+        this.size = 20
     }
 }
 // Versatile
@@ -31,7 +32,46 @@ class Diamond {
             this.y = Math.floor(Math.random() * 568) + 101
             this.distance = (player.x - this.x) ** 2 + (player.y - this.y) ** 2
         } while (this.distance < 400000);
+        this.fly = false
+        this.flySpeed = -400
         this.color = "#dddd33"
+    }
+    attack(delta) {
+        if (this.fly && currentBoss != undefined) {
+            this.angle = Math.atan2(currentBoss.y + currentBoss.size / 2 - this.y + 6, currentBoss.x + currentBoss.size / 2 - this.x + 6)
+            console.log(this.angle)
+            this.x += Math.cos(this.angle) * (this.flySpeed * delta)
+            this.y += Math.sin(this.angle) * (this.flySpeed * delta)
+            this.flySpeed += 10
+
+            for (let i = 0; i < diamonds.length; i++) {
+                if (this.x > currentBoss.x && this.x < currentBoss.x + currentBoss.size && this.y > currentBoss.y && this.y < currentBoss.y + currentBoss.size) {
+                    currentBoss.health--
+                    diamonds.splice(i, 1)
+                    if (currentBoss.phase == 1 && currentBoss.health == 0) { } else { spawnDiamond() }
+                    shake(15, 15)
+                    if (currentBoss.health == 0) {
+                        if (selectedBoss == 6 && currentBoss.phase == 1) {
+                            for (let i = 0; i < 120; i++) {
+                                setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
+                            }
+                            bossDeathSound.play()
+                            shake(30, 150)
+                            currentBoss.phaseSwitch()
+                        } else {
+                            for (let i = 0; i < 120; i++) {
+                                setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
+                            }
+                            bossDeathSound.play()
+                            shake(30, 150)
+                            end()
+                        }
+                    } else {
+                        bossHurtSound.play()
+                    }
+                }
+            }
+        }
     }
 }
 class Particle {
@@ -73,7 +113,7 @@ class Charger {
                 projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.PI / -2, 500, 10))
                 if (this.health <= this.maxHealth / 1.5) {
                     projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.PI, 500, 10))
-                    projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), 0, 500, 7))
+                    projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), 0, 500, 10))
                 }
                 this.lastShot = this.fireRate
             } else {
@@ -362,12 +402,12 @@ class Harbinger {
             if (this.lastShot < 0) {
                 if (!this.swapUD) {
                     for (let i = 0; i <= canvas.width; i += canvas.width / 60) {
-                        projectiles.push(new Projectile(i + canvas.width / 120, 0, Math.PI / 2, canvas.height/4, 10))
+                        projectiles.push(new Projectile(i + canvas.width / 120, 0, Math.PI / 2, canvas.height / 4, 10))
                     }
                     this.swapUD = true;
                 } else {
                     for (let i = 0; i <= canvas.width; i += canvas.width / 60) {
-                        projectiles.push(new Projectile(i + canvas.width / 120, canvas.height, Math.PI / -2, canvas.height/4, 10))
+                        projectiles.push(new Projectile(i + canvas.width / 120, canvas.height, Math.PI / -2, canvas.height / 4, 10))
                     }
                     this.swapUD = false;
                 }
@@ -378,14 +418,14 @@ class Harbinger {
             }
 
             if (this.lastShot2 < 0) {
-                if (!this.swapRL) { 
+                if (!this.swapRL) {
                     for (let i = 0; i <= canvas.height; i += canvas.height / 35) {
-                        projectiles.push(new Projectile(canvas.width, i + canvas.height / 70, Math.PI, canvas.width/5, 10))
+                        projectiles.push(new Projectile(canvas.width, i + canvas.height / 70, Math.PI, canvas.width / 5, 10))
                     }
                     this.swapRL = true;
                 } else {
                     for (let i = 0; i <= canvas.height; i += canvas.height / 35) {
-                        projectiles.push(new Projectile(0, i + canvas.height / 70, 0, canvas.width/5, 10))
+                        projectiles.push(new Projectile(0, i + canvas.height / 70, 0, canvas.width / 5, 10))
                     }
                     this.swapRL = false;
                 }
@@ -486,6 +526,7 @@ const attempts = {
 const enableSound = new Audio("audio/enableSound.mp3")
 const playerDeathSound = new Audio("audio/playerDeathSound.mp3")
 const playerDashSound = new Audio("audio/playerDashSound.mp3")
+const diamondCollectSound = new Audio("audio/diamondCollectSound.mp3")
 const bossHurtSound = new Audio("audio/bossHurtSound.mp3")
 const bossDeathSound = new Audio("audio/bossDeathSound.mp3")
 const bossPhaseSound = new Audio("audio/bossPhaseSound.mp3")
@@ -495,6 +536,8 @@ let currentBoss;
 let selectedBoss = 0;
 let globalOffsetX = 0;
 let globalOffsetY = 0;
+
+let bossPulse = 1
 
 // Event Listeners
 document.addEventListener("keydown", (e) => {
@@ -587,26 +630,53 @@ function guide(tab) {
 // Screen Draw 
 function draw() {
     // Reset
+    ctx.shadowBlur = 0; // how strong the glow is
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.fillStyle = "#222223"
+    ctx.fillStyle = "#151515"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    for (let i = 0; i < canvas.width; i += 60) {
+        ctx.fillStyle = "#181818"
+        ctx.fillRect(i, 0, 2, canvas.height)
+    }
+    for (let i = 0; i < canvas.height; i += 60) {
+        ctx.fillStyle = "#181818"
+        ctx.fillRect(0, i, canvas.width, 2)
+    }
+
+    ctx.shadowColor = "rgba(0, 0, 0, 0.8)"; // glow color
+    ctx.shadowBlur = 0; // how strong the glow is
+
     // Particles
     for (let i = 0; i < particles.length; i++) {
+        ctx.shadowColor = particles[i].color; // glow color
+        ctx.shadowBlur = particles[i].size;
+
         ctx.fillStyle = particles[i].color
         ctx.fillRect(particles[i].x + globalOffsetX, particles[i].y + globalOffsetY, particles[i].size, particles[i].size)
     }
     // Player
     if (player.health > 0) {
+        ctx.shadowColor = player.color; // glow color
+        ctx.shadowBlur = player.size;
+
         ctx.fillStyle = player.color
-        ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, 20, 20)
+        ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, player.size, player.size)
     }
     // Player Dash Meter
+    ctx.shadowColor = "#669FB3"; // glow color
+    ctx.shadowBlur = 10;
+
     ctx.fillStyle = "#669FB3"
+    ctx.strokeStyle = "#669FB3"
     if (player.dashCoolDown > 0) {
-        ctx.fillRect(player.x + (10 - player.dashCoolDown * 30) + globalOffsetX, player.y - 10 + globalOffsetY, player.dashCoolDown * 60, 5)
+        ctx.fillRect(player.x + (10 - player.dashCoolDown * 50) + globalOffsetX, player.y - 10 + globalOffsetY, player.dashCoolDown * 100, 5)
+        ctx.strokeRect(player.x - 15 + globalOffsetX, player.y - 10 + globalOffsetY, 50, 5)
     }
     // Projectiles 
     for (let i = 0; i < projectiles.length; i++) {
+        ctx.shadowColor = currentBoss.color; // glow color
+        ctx.shadowBlur = projectiles[i].size;
         ctx.fillStyle = currentBoss.color
         ctx.beginPath();
         ctx.arc(projectiles[i].x + globalOffsetX, projectiles[i].y + globalOffsetY, projectiles[i].size, 0, 2 * Math.PI);
@@ -618,13 +688,19 @@ function draw() {
         ctx.translate(diamonds[i].x, diamonds[i].y);
         ctx.rotate(Math.PI / 4);
 
+        ctx.shadowColor = diamonds[i].color; // glow color
+        ctx.shadowBlur = 12
+
         ctx.fillStyle = diamonds[i].color;
-        ctx.fillRect(-5 + globalOffsetX, -5 + globalOffsetY, 10, 10);
+        ctx.fillRect(-5 + globalOffsetX, -5 + globalOffsetY, 12, 12);
 
         ctx.restore();
     }
     // Boss
     if (currentBoss != undefined) {
+        ctx.shadowColor = currentBoss.color;
+        ctx.shadowBlur = currentBoss.size / 3
+
         ctx.fillStyle = currentBoss.color
         ctx.fillRect(currentBoss.x + globalOffsetX, currentBoss.y + globalOffsetY, currentBoss.size, currentBoss.size)
         // Boss Health Bar=
@@ -632,8 +708,12 @@ function draw() {
         let barLength = (canvas.width - (20 * (currentBoss.maxHealth + 1))) / currentBoss.maxHealth
         for (let i = 0; i < currentBoss.maxHealth; i++) {
             if (i + 1 > currentBoss.health) {
-                ctx.fillStyle = "#151517"
+                ctx.shadowColor = "#111";
+                ctx.shadowBlur = 0
+                ctx.fillStyle = "#111"
             } else {
+                ctx.shadowColor = "#dddd33";
+                ctx.shadowBlur = 10
                 ctx.fillStyle = "#dddd33";
             }
             ctx.fillRect((20 * (i + 1)) + (barLength * i), 750, barLength, 10);
@@ -641,6 +721,7 @@ function draw() {
 
     }
 }
+
 
 // Player
 function playerMovement(delta) {
@@ -743,7 +824,7 @@ function projectileCol() {
 function spawnDiamond() {
     diamonds.push(new Diamond())
 }
-spawnDiamond()
+// spawnDiamond()
 setInterval((e) => {
     for (let i = 0; i < diamonds.length; i++) {
         particles.push(new Particle(diamonds[i].x, diamonds[i].y, (Math.random() * Math.PI * 2), 170, .1, 5, "#AAAA00"))
@@ -754,30 +835,15 @@ setInterval((e) => {
 function pickupDiamond() {
     for (let i = 0; i < diamonds.length; i++) {
         if (player.x + 10 > diamonds[i].x - 20 && player.x + 10 < diamonds[i].x + 20 && player.y + 10 > diamonds[i].y - 20 && player.y + 10 < diamonds[i].y + 20) {
-            currentBoss.health--
-            diamonds.splice(i, 1)
-            if (currentBoss.phase == 1 && currentBoss.health == 0) { } else { spawnDiamond() }
-            shake(10, 10)
-            if (currentBoss.health == 0) {
-                if (selectedBoss == 6 && currentBoss.phase == 1) {
-                    for (let i = 0; i < 120; i++) {
-                        setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
+            if (!diamonds[i].fly) {
+                diamonds[i].fly = true
+                diamondCollectSound.play()
+                for (let i = 0; i < diamonds.length; i++) {
+                    for (let k = 0; k < 6; k++) {
+                        particles.push(new Particle(diamonds[i].x, diamonds[i].y, (Math.random() * Math.PI * 2), 300, .2, 7, "#AAAA00"))
                     }
-                    bossDeathSound.play()
-                    shake(30, 150)
-                    currentBoss.phaseSwitch()
-                } else {
-                    for (let i = 0; i < 120; i++) {
-                        setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
-                    }
-                    bossDeathSound.play()
-                    shake(30, 150)
-                    end()
                 }
-            } else {
-                bossHurtSound.play()
             }
-            break
         }
     }
 }
@@ -827,6 +893,11 @@ function loop(time) {
         currentBoss.move(delta)
         currentBoss.attack(delta)
         bossCol()
+    }
+    if (diamonds.length > 0) {
+        for (let i = 0; i < diamonds.length; i++) {
+            diamonds[i].attack(delta)
+        }
     }
     draw()
 
