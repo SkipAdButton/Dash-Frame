@@ -41,7 +41,7 @@ class Diamond {
             this.angle = Math.atan2(currentBoss.y + currentBoss.size / 2 - this.y + 6, currentBoss.x + currentBoss.size / 2 - this.x + 6)
             this.x += Math.cos(this.angle) * (this.flySpeed * delta)
             this.y += Math.sin(this.angle) * (this.flySpeed * delta)
-            this.flySpeed += 10
+            this.flySpeed += 600 * delta
 
             for (let i = 0; i < diamonds.length; i++) {
                 if (this.x > currentBoss.x && this.x < currentBoss.x + currentBoss.size && this.y > currentBoss.y && this.y < currentBoss.y + currentBoss.size) {
