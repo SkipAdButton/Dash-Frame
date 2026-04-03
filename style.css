@@ -8,12 +8,13 @@
     transition: font-size .3s ease-in-out;
 }
 body {
-    background-color: #333334;
+    background-color: #000;
 }
 #canvas {
     position: absolute;
     top: calc(50vh - 384px);
     left: calc(50vw - 680px);
+    image-rendering: crisp-edges;
 }
 #menu {
     position: absolute;
@@ -22,20 +23,13 @@ body {
     padding: 100px;
     top: calc(50vh - 384px);
     left: calc(50vw - 680px);
-    background-image: linear-gradient(135deg, #8A2BE2, #00FF7F);
+    background-image: linear-gradient(135deg, rgba(0 0 0 0), #f00);
     display: flex;
     align-items: flex-start;
     justify-content:flex-start;
     flex-direction: column;
-}
-.beginner {
-    background-image: linear-gradient(135deg, #8A2BE2, #00FF7F) !important;
-}
-.hard {
-    background-image: linear-gradient(135deg, #FFA000, #FF4D00) !important;
-}
-.impossible {
-    background-image: linear-gradient(135deg, #cc0000 0%, #1a0000 80%) !important;
+    opacity: 1;
+    transition: opacity .1s linear;
 }
 #startScreen{
     display: flex;
@@ -51,7 +45,7 @@ body {
     font-style: italic;
     transform-origin: left;
     transform: scaleX(1.5);
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 #startScreen h2{
     color: white;
@@ -90,7 +84,8 @@ body {
     font-size: 70px;
 }
 .hide{
-    visibility: hidden;
+    opacity: 0.0 !important;
+    pointer-events: none;
 }
 
 #htpMenu {
@@ -99,11 +94,13 @@ body {
     height: 768px;
     top: calc(50vh - 384px);
     left: calc(50vw - 680px);
-    background-image: linear-gradient(135deg, #4da3ff, #1e3a8a);
+    /* background-image: linear-gradient(135deg, #4da3ff, #1e3a8a); */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    opacity: 1;
+    transition: opacity .1s linear;
 }
 #htpScreen{
     display: flex;
@@ -164,4 +161,19 @@ body {
     font-size: 36px;
     font-weight: bold;
     
+}
+
+/* Colors */
+
+.neonBlue{
+    color: #00FFFF;
+    text-shadow: 0 0 10px #00FFFF   ;
+}
+.neonWhite{
+    color: #fff;
+    text-shadow: 0 0 10px #fff   ;
+}
+.neonPurple{
+    color: #FE019A;
+    text-shadow: 0 0 10px #FE019A;
 }
