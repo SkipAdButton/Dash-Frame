@@ -31,7 +31,7 @@ class Diamond {
             this.x = Math.floor(Math.random() * 1160) + 101
             this.y = Math.floor(Math.random() * 568) + 101
             this.distance = (player.x - this.x) ** 2 + (player.y - this.y) ** 2
-        } while (this.distance < 400000);
+        } while (this.distance < 400000 || this.x > currentBoss.x && this.x < currentBoss.x + currentBoss.size && this.y > currentBoss.y && this.y < currentBoss.y + currentBoss.size);
         this.fly = false
         this.flySpeed = -400
         this.color = "#dddd33"
@@ -52,7 +52,7 @@ class Diamond {
                     diamonds.splice(i, 1)
                     shake(25, 10)
                     if (currentBoss.health == 0) {
-                        if (selectedBoss == 6 && currentBoss.phase == 1) {
+                        if (selectedBoss == 7 && currentBoss.phase == 1) {
                             for (let i = 0; i < 120; i++) {
                                 setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
                             }
@@ -816,7 +816,7 @@ class Harbinger {
         if (type == "playerDeath" && !this.quipping) {
             this.quipping = true
             this.quipList = [
-                "[Do not return.]"
+                "[You poor fool.]"
             ]
             this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
             this.currentQuip = ""
@@ -866,7 +866,167 @@ class Harbinger {
 		}
     }
 }
+class Tutorial {
+    constructor(maxHealth, speed, fireRate) {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth
+        this.speed = speed;
+        this.fireRate = fireRate;
 
+        this.lastShot = 0;
+		this.size = 100
+        this.x = canvas.width/1.25 - 50
+        this.y = canvas.height/2 - 50
+        this.color = "#005AAA"
+
+        this.phasePoint = 6
+        this.quipping = false
+    }
+    move(delta) {
+        if (this.health > 0) {
+            this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
+            this.x += Math.cos(this.angle) * (this.speed * delta)
+            this.y += Math.sin(this.angle) * (this.speed * delta)
+        }
+    }
+    attack(delta) {
+        if (this.health > 0) {
+            if (this.lastShot < 0) {
+				projectiles.splice(0, projectiles.length)
+				for (let i = 0; i < 40; i++) {
+					projectiles.push(new Projectile(canvas.width/2 + (Math.random() * 20 - 10), (canvas.height/40 * i), Math.PI / 2, 0, 10))
+				}
+                this.lastShot = this.fireRate
+            } else {
+                this.lastShot -= delta
+            }
+        }
+    }
+    quip(type) {
+        if (type == "playerDeath" && !this.quipping) {
+            this.quipping = true
+            this.quipList = [
+                "[Seriously? Just bring in the next one.]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+        } else if (type == "phase" && !this.quipping) {
+            this.quipping = true
+            this.quipList = [
+                "[Are you prepared?]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+        } else if (type == "start" && !this.quipping) {
+			this.quipping = true
+            this.quipList = [
+                "[Hello, Human Spirit, I have chosen you as my warrior.]",
+				"[You need to defeat the ones plaguing this world.]",
+				"[So that my rule may see fruition.]",
+				"[Move with 'WASD' or 'ARROW KEYS']",
+				"[I have also given you a fragment of my power.]",
+				"[Press 'SPACE' to dash through projectiles]",
+				"[Collect the diamonds and begin your conquests]",
+				"[I will be watching]"
+            ]
+            this.selectedQuip = this.quipList[0]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (25 * i))
+            }
+
+            setTimeout((e) => {
+                this.selectedQuip = this.quipList[1]
+            	this.currentQuip = ""
+            	for (let i = 0; i < this.selectedQuip.length; i++) {
+            	    setTimeout((e) => {
+                    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
+            	    }, 25 + (25 * i))
+            	}
+
+				setTimeout((e) => {
+                	this.selectedQuip = this.quipList[2]
+            		this.currentQuip = ""
+            		for (let i = 0; i < this.selectedQuip.length; i++) {
+            		    setTimeout((e) => {
+                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
+            		    }, 25 + (25 * i))
+            		}
+					setTimeout((e) => {
+                	this.selectedQuip = this.quipList[3]
+            		this.currentQuip = ""
+            		for (let i = 0; i < this.selectedQuip.length; i++) {
+            		    setTimeout((e) => {
+                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
+            		    }, 25 + (25 * i))
+            		}
+					setTimeout((e) => {
+                	this.selectedQuip = this.quipList[4]
+            		this.currentQuip = ""
+            		for (let i = 0; i < this.selectedQuip.length; i++) {
+            		    setTimeout((e) => {
+                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
+            		    }, 25 + (25 * i))
+            		}
+					setTimeout((e) => {
+                	this.selectedQuip = this.quipList[5]
+            		this.currentQuip = ""
+            		for (let i = 0; i < this.selectedQuip.length; i++) {
+            		    setTimeout((e) => {
+                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
+            		    }, 25 + (25 * i))
+            		}
+					setTimeout((e) => {
+                	this.selectedQuip = this.quipList[6]
+            		this.currentQuip = ""
+					diamonds.push(new Diamond())
+            		for (let i = 0; i < this.selectedQuip.length; i++) {
+            		    setTimeout((e) => {
+                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
+            		    }, 25 + (25 * i))
+            		}
+					setTimeout((e) => {
+                	this.selectedQuip = this.quipList[7]
+            		this.currentQuip = ""
+            		for (let i = 0; i < this.selectedQuip.length; i++) {
+            		    setTimeout((e) => {
+                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
+            		    }, 25 + (25 * i))
+            		}
+					setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+            	}, 500 + (50 * this.selectedQuip.length))
+            	}, 500 + (50 * this.selectedQuip.length))
+            	}, 500 + (50 * this.selectedQuip.length))
+            	}, 500 + (50 * this.selectedQuip.length))
+            	}, 500 + (50 * this.selectedQuip.length))
+            	}, 500 + (50 * this.selectedQuip.length))
+            }, 500 + (50 * this.selectedQuip.length))
+		}  
+    }
+}
 
 // projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2)), 600, 10))
 
@@ -882,7 +1042,7 @@ const htpMenu = document.getElementById("htpMenu")
 const attemptCounter = document.getElementById("attemptCounter")
 const htpq2 = document.getElementById("htpq2")
 const bossList = [
-    "CHARGER", "BEYBLADE", "STARFISH", "RINGMASTER", "RAINMAN", "TSUNAMI", "HARBINGER"
+    "TUTORIAL", "CHARGER", "BEYBLADE", "STARFISH", "RINGMASTER", "RAINMAN", "TSUNAMI", "HARBINGER"
 ]
 const keys = {}
 const player = new Player(0, 400)
@@ -897,6 +1057,7 @@ const attempts = {
     4: 0,
     5: 0,
     6: 0,
+	7: 0,
 }
 
 const enableSound = new Audio("audio/enableSound.mp3")
@@ -942,19 +1103,21 @@ function cycleBoss() {
 }
 
 function start() { // IMPORTANT
-    if (selectedBoss == 0) {
-        spawnBoss(new Charger(10, 225, .1))
+	if (selectedBoss == 0) {
+        spawnBoss(new Tutorial(3, 0, 0))
     } else if (selectedBoss == 1) {
-        spawnBoss(new Beyblade(10, 170, .02))
+        spawnBoss(new Charger(10, 225, .1))
     } else if (selectedBoss == 2) {
-        spawnBoss(new Starfish(10, 130, .25))
+        spawnBoss(new Beyblade(10, 170, .02))
     } else if (selectedBoss == 3) {
-        spawnBoss(new Ringmaster(10, 150, 1.8))
+        spawnBoss(new Starfish(10, 130, .25))
     } else if (selectedBoss == 4) {
-        spawnBoss(new Rainman(10, 120, .2))
+        spawnBoss(new Ringmaster(10, 150, 1.8))
     } else if (selectedBoss == 5) {
-        spawnBoss(new Tsunami(10, 135, 1.8, .5))
+        spawnBoss(new Rainman(10, 120, .2))
     } else if (selectedBoss == 6) {
+        spawnBoss(new Tsunami(10, 135, 1.8, .5))
+    } else if (selectedBoss == 7) {
         spawnBoss(new Harbinger(10, 165, 4, 5, .05, 5, .5))
     }
     attempts[selectedBoss] += 1
@@ -965,7 +1128,9 @@ function start() { // IMPORTANT
     projectiles.splice(0, projectiles.length)
     menu.classList.add("hide")
     diamonds.splice(0, diamonds.length)
-    diamonds.push(new Diamond())
+	if (selectedBoss != 0) {
+		diamonds.push(new Diamond())
+	}
 	setTimeout(() => {
 		currentBoss.quip("start")
 	}, 500);
@@ -1089,7 +1254,7 @@ function draw() {
 
         ctx.fillStyle = currentBoss.color
         ctx.fillRect(currentBoss.x + globalOffsetX, currentBoss.y + globalOffsetY, currentBoss.size, currentBoss.size)
-		
+
         ctx.fillStyle = `rgba(255, 255, 255, ${bossPulse})`
         ctx.fillRect(currentBoss.x + globalOffsetX, currentBoss.y + globalOffsetY, currentBoss.size, currentBoss.size)
 
@@ -1098,7 +1263,7 @@ function draw() {
             ctx.font = "15px monospace";       // size + font
             ctx.fillStyle = "#999";       // color
             ctx.textAlign = "center";
-            ctx.fillText(currentBoss.currentQuip, currentBoss.x + currentBoss.size / 2, currentBoss.y - 10); // text, x, y
+            ctx.fillText(currentBoss.currentQuip, currentBoss.x + currentBoss.size / 2 + globalOffsetX, currentBoss.y - 10 + globalOffsetY); // text, x, y
         }
 
         // Boss Health Bar
