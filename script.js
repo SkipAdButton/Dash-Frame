@@ -129,7 +129,7 @@ class Charger {
         if (type == "playerDeath" && !this.quipping) {
             this.quipping = true
             this.quipList = [
-                "[Try dashing]"
+                "[Try dashing.]"
             ]
             this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
             this.currentQuip = ""
@@ -158,7 +158,23 @@ class Charger {
                 this.currentQuip = ""
                 this.quipping = false
             }, 500 + (50 * this.selectedQuip.length))
-        }
+        } else if (type == "start" && !this.quipping) {
+			this.quipping = true
+            this.quipList = [
+                "[Ready for a scuffle, friend?]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+		}
     }
 }
 class Ringmaster {
@@ -236,7 +252,24 @@ class Ringmaster {
                 this.currentQuip = ""
                 this.quipping = false
             }, 500 + (50 * this.selectedQuip.length))
-        }
+        } else if (type == "start" && !this.quipping) {
+			this.quipping = true
+            this.quipList = [
+                "[Welcome to the show!]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+		}
+
     }
 }
 class Beyblade {
@@ -299,6 +332,22 @@ class Beyblade {
         } else if (type == "phase" && !this.quipping) {
             this.quipping = true
             this.quipList = [
+                "[I need to go faster!]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+        } else if (type == "start" && !this.quipping) {
+			this.quipping = true
+            this.quipList = [
                 "[LET IT RIP!]"
             ]
             this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
@@ -312,7 +361,7 @@ class Beyblade {
                 this.currentQuip = ""
                 this.quipping = false
             }, 500 + (50 * this.selectedQuip.length))
-        }
+		}
     }
 }
 class Rainman {
@@ -387,7 +436,23 @@ class Rainman {
                 this.currentQuip = ""
                 this.quipping = false
             }, 500 + (50 * this.selectedQuip.length))
-        }
+        } else if (type == "start" && !this.quipping) {
+			this.quipping = true
+            this.quipList = [
+                "[I have no qualms with you.]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+		}
     }
 }
 
@@ -469,7 +534,7 @@ class Tsunami {
         if (type == "playerDeath" && !this.quipping) {
             this.quipping = true
             this.quipList = [
-                "[The tide sweeps all]"
+                "[The tide sweeps all!]"
             ]
             this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
             this.currentQuip = ""
@@ -498,7 +563,23 @@ class Tsunami {
                 this.currentQuip = ""
                 this.quipping = false
             }, 500 + (50 * this.selectedQuip.length))
-        }
+        } else if (type == "start" && !this.quipping) {
+			this.quipping = true
+            this.quipList = [
+                "[Arrogant little cube.]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+		}
     }
 }
 class Starfish {
@@ -579,7 +660,23 @@ class Starfish {
                 this.currentQuip = ""
                 this.quipping = false
             }, 500 + (50 * this.selectedQuip.length))
-        }
+        } else if (type == "start" && !this.quipping) {
+			this.quipping = true
+            this.quipList = [
+                "[End of the line, rapscallion.]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+		}
     }
 }
 class Harbinger {
@@ -613,7 +710,7 @@ class Harbinger {
         if (this.phase == 2) {
             return `rgb(${Math.floor(Math.random() * 255)} ${Math.floor(Math.random() * 255)} ${Math.floor(Math.random() * 255)})`
         } else {
-            return `rgb(${Math.floor(Math.random() * 100)} 0 0 )`
+            return `rgb(${Math.floor(Math.random() * 80) + 30} 0 0 )`
         }
     }
     move(delta) {
@@ -719,7 +816,7 @@ class Harbinger {
         if (type == "playerDeath" && !this.quipping) {
             this.quipping = true
             this.quipList = [
-                "[Vermin.]"
+                "[Do not return.]"
             ]
             this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
             this.currentQuip = ""
@@ -736,7 +833,7 @@ class Harbinger {
             setTimeout((e) => {
                 this.quipping = true
                 this.quipList = [
-                    "[You should have stayed away...]"
+                    "[This is your own undoing...]"
                 ]
                 this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
                 this.currentQuip = ""
@@ -750,7 +847,23 @@ class Harbinger {
                     this.quipping = false
                 }, 500 + (50 * this.selectedQuip.length))
             }, 3000);
-        }
+        } else if (type == "start" && !this.quipping) {
+			this.quipping = true
+            this.quipList = [
+                "[You don't know the weight of your actions.]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+		}
     }
 }
 
@@ -853,6 +966,9 @@ function start() { // IMPORTANT
     menu.classList.add("hide")
     diamonds.splice(0, diamonds.length)
     diamonds.push(new Diamond())
+	setTimeout(() => {
+		currentBoss.quip("start")
+	}, 500);
 }
 
 function end() {
@@ -973,7 +1089,7 @@ function draw() {
 
         ctx.fillStyle = currentBoss.color
         ctx.fillRect(currentBoss.x + globalOffsetX, currentBoss.y + globalOffsetY, currentBoss.size, currentBoss.size)
-
+		
         ctx.fillStyle = `rgba(255, 255, 255, ${bossPulse})`
         ctx.fillRect(currentBoss.x + globalOffsetX, currentBoss.y + globalOffsetY, currentBoss.size, currentBoss.size)
 
