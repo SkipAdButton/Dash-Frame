@@ -4,14 +4,17 @@ class Player {
         this.maxHealth = maxHealth
         this.health = maxHealth
         this.speed = speed
-        this.x = 50
-        this.y = 50
+        this.x = canvas.width/4 - 10
+        this.y = canvas.height/2 - 10
         this.color = "#00BFFF"
+
         this.dashing = false
         this.dashCoolDown = 0
         this.dashDirX = 0
         this.dashDirY = 0
         this.dashFrame = 0
+		this.dashDisable = false
+
         this.size = 20
     }
 }
@@ -23,7 +26,7 @@ class Projectile {
         this.size = size
         this.x = x
         this.y = y
-    }
+	}
 }
 class Diamond {
     constructor() {
@@ -52,7 +55,7 @@ class Diamond {
                     diamonds.splice(i, 1)
                     shake(25, 10)
                     if (currentBoss.health == 0) {
-                        if (selectedBoss == 7 && currentBoss.phase == 1) {
+                        if (selectedBoss == 8 && currentBoss.phase == 1) {
                             for (let i = 0; i < 120; i++) {
                                 setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
                             }
@@ -95,9 +98,9 @@ class Charger {
         this.fireRate = fireRate;
 
         this.lastShot = fireRate;
-        this.x = 680 - 32.5
-        this.y = 384 - 32.5
-        this.size = 100
+		this.size = 100
+        this.x = canvas.width * 3/4 - this.size/2
+        this.y = canvas.height/2 - this.size/2
         this.color = "#FF1A1A"
 
         this.phasePoint = 6
@@ -185,9 +188,9 @@ class Ringmaster {
         this.fireRate = fireRate;
 
         this.lastShot = fireRate;
-        this.x = 680 - 32.5
-        this.y = 384 - 32.5
         this.size = 65
+		this.x = canvas.width * 3/4 - this.size/2
+        this.y = canvas.height/2 - this.size/2
         this.color = "#555599"
 
         this.phasePoint = 5
@@ -281,9 +284,9 @@ class Beyblade {
 
         this.spin = 0
         this.lastShot = fireRate;
-        this.x = 680 - 32.5
-        this.y = 384 - 32.5
         this.size = 40
+		this.x = canvas.width * 3/4 - this.size/2
+        this.y = canvas.height/2 - this.size/2
         this.color = "#00dd55"
 
         this.phasePoint = 5
@@ -373,9 +376,9 @@ class Rainman {
 
 
         this.lastShot = fireRate;
-        this.x = 680 - 32.5
-        this.y = 384 - 32.5
         this.size = 55
+		this.x = canvas.width * 3/4 - this.size/2
+        this.y = canvas.height/2 - this.size/2
         this.color = "#0000dd"
 
         this.phasePoint = 5
@@ -468,9 +471,9 @@ class Tsunami {
 
         this.lastShot = fireRate;
         this.lastShot2 = fireRate2;
-        this.x = 680 - 32.5
-        this.y = 384 - 32.5
         this.size = 70
+		this.x = canvas.width * 3/4 - this.size/2
+        this.y = canvas.height/2 - this.size/2
         this.color = "#007c82"
         this.random = Math.floor(Math.random() * 4) + 1
 
@@ -591,9 +594,9 @@ class Starfish {
 
         this.spin = 0
         this.lastShot = fireRate;
-        this.x = 680 - 32.5
-        this.y = 384 - 32.5
         this.size = 35
+		this.x = canvas.width * 3/4 - this.size/2
+        this.y = canvas.height/2 - this.size/2
         this.color = "#FF7F50"
 
         this.phasePoint = 5
@@ -631,7 +634,7 @@ class Starfish {
         if (type == "playerDeath" && !this.quipping) {
             this.quipping = true
             this.quipList = [
-                "[Sorry Bucko...]"
+                "[Nice try, crook.]"
             ]
             this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
             this.currentQuip = ""
@@ -700,9 +703,9 @@ class Harbinger {
         this.phase = 1;
 
         this.spin = 0
-        this.x = 680 - 32.5
-        this.y = 384 - 32.5
         this.size = 90
+		this.x = canvas.width * 3/4 - this.size/2
+        this.y = canvas.height/2 - this.size/2
 
         this.phasePoint = 0
     }
@@ -875,8 +878,8 @@ class Tutorial {
 
         this.lastShot = 0;
 		this.size = 100
-        this.x = canvas.width/1.25 - 50
-        this.y = canvas.height/2 - 50
+        this.x = canvas.width * 3/4 - this.size/2
+        this.y = canvas.height/2 - this.size/2
         this.color = "#005AAA"
 
         this.phasePoint = 6
@@ -906,7 +909,7 @@ class Tutorial {
         if (type == "playerDeath" && !this.quipping) {
             this.quipping = true
             this.quipList = [
-                "[Seriously? Just bring in the next one.]"
+                "[Seriously?]"
             ]
             this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
             this.currentQuip = ""
@@ -938,14 +941,14 @@ class Tutorial {
         } else if (type == "start" && !this.quipping) {
 			this.quipping = true
             this.quipList = [
-                "[Hello, Human Spirit, I have chosen you as my warrior.]",
+                "[Hello, Human Spirit, you will be my warrior.]",
 				"[You need to defeat the ones plaguing this world.]",
 				"[So that my rule may see fruition.]",
 				"[Move with 'WASD' or 'ARROW KEYS']",
 				"[I have also given you a fragment of my power.]",
-				"[Press 'SPACE' to dash through projectiles]",
-				"[Collect the diamonds and begin your conquests]",
-				"[I will be watching]"
+				"[Press 'SPACE' to dash through projectiles.]",
+				"[Collect the diamonds and begin your conquest.]",
+				"[I will be watching...]"
             ]
             this.selectedQuip = this.quipList[0]
             this.currentQuip = ""
@@ -991,6 +994,11 @@ class Tutorial {
 					setTimeout((e) => {
                 	this.selectedQuip = this.quipList[5]
             		this.currentQuip = ""
+					player.dashDisable = false
+					player.dashCoolDown = .5
+					setTimeout((e) => {
+            		    playerPulse = 1
+            		}, 500)
             		for (let i = 0; i < this.selectedQuip.length; i++) {
             		    setTimeout((e) => {
                 	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
@@ -1027,6 +1035,123 @@ class Tutorial {
 		}  
     }
 }
+class Monk {
+    constructor(maxHealth, speed, fireRate, fireRate2) {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth
+        this.speed = speed;
+        this.fireRate = fireRate;
+		this.fireRate2 = fireRate2;
+
+        this.lastShot = fireRate;
+		this.lastShot2 = fireRate2;
+        this.size = 75
+		this.x = canvas.width * 3/4 - this.size/2
+        this.y = canvas.height/2 - this.size/2
+        this.color = "#DD7700"
+
+		this.spin = 0
+        this.phasePoint = 5
+    }
+    move(delta) {
+        if (this.health > 0) {
+            this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
+            this.x += Math.cos(this.angle) * (this.speed * delta)
+            this.y += Math.sin(this.angle) * (this.speed * delta)
+        }
+    }
+    attack(delta) {
+        if (this.health > 0) {
+            if (this.lastShot < 0) {
+				if (this.health > this.phasePoint) {
+					this.burstAmount = Math.ceil(Math.random() * 5) + 3
+                    for (let k = 0; k <= canvas.height; k += canvas.height / this.burstAmount) {
+                        projectiles.push(new Projectile(canvas.width, k + canvas.height / 70, Math.PI, Math.ceil(Math.random() * 100) + 150, 10))
+                    }
+					this.burstAmount = Math.ceil(Math.random() * 5) + 3
+                    for (let k = 0; k <= canvas.height; k += canvas.height / this.burstAmount) {
+                        projectiles.push(new Projectile(0, k + canvas.height / 70, Math.PI * 2, Math.ceil(Math.random() * 100) + 150, 10))
+                    }
+					this.lastShot = this.fireRate
+				} else {
+					this.burstAmount = Math.ceil(Math.random() * 5) + 3
+                    for (let k = 0; k <= canvas.height; k += canvas.height / this.burstAmount) {
+                        projectiles.push(new Projectile(canvas.width, k + canvas.height / 70, Math.PI, Math.ceil(Math.random() * 150) + 175, 10))
+                    }
+					this.burstAmount = Math.ceil(Math.random() * 5) + 3
+                    for (let k = 0; k <= canvas.height; k += canvas.height / this.burstAmount) {
+                        projectiles.push(new Projectile(0, k + canvas.height / 70, Math.PI * 2, Math.ceil(Math.random() * 150) + 175, 10))
+                    }
+					this.lastShot = this.fireRate/1.35
+				}
+            } else {
+                this.lastShot -= delta
+            }
+			if (this.lastShot2 < 0) {
+                    for (let k = 0; k < Math.PI * 2; k += Math.PI * 2/3) {
+                        projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), this.spin + k, 600, 15))
+                    }
+                this.lastShot2 = this.fireRate2
+				this.spin += .1
+            } else {
+                this.lastShot2 -= delta
+				console.log(this.lastShot2)
+            }
+        }
+    }
+    quip(type) {
+        if (type == "playerDeath" && !this.quipping) {
+            this.quipping = true
+            this.quipList = [
+                "[You could have done so much good.]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+        } else if (type == "phase" && !this.quipping) {
+            this.quipping = true
+            this.quipList = [
+                "[Such potential...]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+        } else if (type == "start" && !this.quipping) {
+			this.quipping = true
+            this.quipList = [
+                "[You can choose a better path.]"
+            ]
+            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
+            this.currentQuip = ""
+            for (let i = 0; i < this.selectedQuip.length; i++) {
+                setTimeout((e) => {
+                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
+                }, 20 + (20 * i))
+            }
+            setTimeout((e) => {
+                this.currentQuip = ""
+                this.quipping = false
+            }, 500 + (50 * this.selectedQuip.length))
+		}
+
+    }
+}
 
 // projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2)), 600, 10))
 
@@ -1042,7 +1167,7 @@ const htpMenu = document.getElementById("htpMenu")
 const attemptCounter = document.getElementById("attemptCounter")
 const htpq2 = document.getElementById("htpq2")
 const bossList = [
-    "TUTORIAL", "CHARGER", "BEYBLADE", "STARFISH", "RINGMASTER", "RAINMAN", "TSUNAMI", "HARBINGER"
+    "TUTORIAL", "CHARGER", "BEYBLADE", "STARFISH", "RINGMASTER", "RAINMAN", "MONK", "TSUNAMI", "HARBINGER"
 ]
 const keys = {}
 const player = new Player(0, 400)
@@ -1058,6 +1183,7 @@ const attempts = {
     5: 0,
     6: 0,
 	7: 0,
+	8: 0,
 }
 
 const enableSound = new Audio("audio/enableSound.mp3")
@@ -1116,15 +1242,22 @@ function start() { // IMPORTANT
     } else if (selectedBoss == 5) {
         spawnBoss(new Rainman(10, 120, .2))
     } else if (selectedBoss == 6) {
-        spawnBoss(new Tsunami(10, 135, 1.8, .5))
+        spawnBoss(new Monk(10, 20, 2, .15))
     } else if (selectedBoss == 7) {
+        spawnBoss(new Tsunami(10, 135, 1.8, .5))
+    } else if (selectedBoss == 8) {
         spawnBoss(new Harbinger(10, 165, 4, 5, .05, 5, .5))
     }
+	if (selectedBoss == 0) {
+		player.dashDisable = true
+	} else {
+		player.dashDisable = false
+	}
     attempts[selectedBoss] += 1
     attemptCounter.innerHTML = attempts[selectedBoss]
     player.health = 1
-    player.x = 50
-    player.y = 50
+    player.x = canvas.width/5 - 10
+    player.y = canvas.height/2- 10
     projectiles.splice(0, projectiles.length)
     menu.classList.add("hide")
     diamonds.splice(0, diamonds.length)
@@ -1183,11 +1316,11 @@ function draw() {
 
     for (let i = 0; i < canvas.width; i += 60) {
         ctx.fillStyle = "#181818"
-        ctx.fillRect(i, 0, 2, canvas.height)
+        ctx.fillRect(i + globalOffsetX, globalOffsetY, 2, canvas.height)
     }
     for (let i = 0; i < canvas.height; i += 60) {
         ctx.fillStyle = "#181818"
-        ctx.fillRect(0, i, canvas.width, 2)
+        ctx.fillRect(globalOffsetX, i + globalOffsetY, canvas.width, 2)
     }
 
     ctx.shadowColor = "rgba(0, 0, 0, 0.8)"; // glow color
@@ -1260,6 +1393,7 @@ function draw() {
 
         // Quips
         if (currentBoss.currentQuip != undefined) {
+			ctx.shadowBlur = 0
             ctx.font = "15px monospace";       // size + font
             ctx.fillStyle = "#999";       // color
             ctx.textAlign = "center";
@@ -1308,7 +1442,7 @@ function playerMovement(delta) {
 }
 
 function dash(delta) {
-    if (keys[" "] && player.dashDirX == 0 && player.dashDirY == 0 && player.dashCoolDown <= 0 && player.health > 0 && currentBoss != undefined) {
+    if (keys[" "] && player.dashDirX == 0 && player.dashDirY == 0 && player.dashCoolDown <= 0 && player.health > 0 && currentBoss != undefined && !player.dashDisable) {
         if (keys.w || keys.arrowup) player.dashDirY -= 1500
         if (keys.s || keys.arrowdown) player.dashDirY += 1500
         if (keys.a || keys.arrowleft) player.dashDirX -= 1500
