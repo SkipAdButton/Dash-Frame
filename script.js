@@ -158,14 +158,14 @@ class Charger {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("[Woah, woah! Slow your roll their pal.]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Woah, woah! Slow your roll their pal.]", 500, 50, 500, 10)
+            bossQuip("[Woah, woah! Slow your roll there Traveler.]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Woah, woah! Slow your roll there Traveler.]", 500, 50, 500, 10)
 
-            bossQuip("[I can't let you get any further.]", this.talkTime + 50, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[I can't let you get any further.]", this.talkTime + 50, 50, 500, 10)
+            bossQuip("[I can't let you get any further.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[I can't let you get any further.]", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Best you turn around, before someone gets hurt.]", this.talkTime + 50, 100, 500, 10)
-            this.talkTime = quipTimeCalc("[Best you turn around, before someone gets hurt.]", this.talkTime + 50, 100, 500, 10)
+            bossQuip("[Best you turn around, before someone gets hurt.]", this.talkTime + 250, 100, 500, 10)
+            this.talkTime = quipTimeCalc("[Best you turn around, before someone gets hurt.]", this.talkTime + 250, 100, 500, 10)
 
             setTimeout((e) => {
                 this.halt = false
@@ -193,18 +193,15 @@ class Ringmaster {
         this.phasePoint = 5
     }
     move(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
             this.x += Math.cos(this.angle) * (this.speed * delta)
             this.y += Math.sin(this.angle) * (this.speed * delta)
         }
     }
     attack(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             if (this.lastShot < 0) {
-                /* for (let i = 0; i < Math.PI * 2; i += .1) {
-                    projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2)) + i, 600, 10))
-                } */
                 for (let i = 0; i < Math.PI * 2; i += Math.PI / 30) {
                     projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2)) + i, 600, 10))
                 }
@@ -217,6 +214,48 @@ class Ringmaster {
             } else {
                 this.lastShot -= delta
             }
+        }
+    }
+	intro() {   
+        if (bossInfo[selectedBoss].visited) {
+            this.halt = false
+            player.moveDisable = false
+            player.dashDisable = false
+            player.holdRight = false
+            spawnDiamond()
+
+            bossQuip("[Time to put on a show!]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Time to put on a show!]", 500, 50, 500, 10)
+        } else {
+            this.talkTime = 0
+            this.halt = true
+            player.moveDisable = true
+            player.x = -10 - player.size/2
+            player.holdRight = true
+
+            setInterval((e) => {
+                player.holdRight = false
+            }, 1000)
+
+            bossQuip("[And for my final act...]", 500, 100, 500, 10)
+            this.talkTime = quipTimeCalc("[And for my final act...]", 500, 100, 500, 10)
+
+            bossQuip("[I will be defying death...]", this.talkTime + 250, 100, 500, 10)
+            this.talkTime = quipTimeCalc("[I will be defying death...]", this.talkTime + 250, 100, 500, 10)
+
+            bossQuip("[Against the Traveler!]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Against the Traveler!]", this.talkTime + 250, 50, 500, 10)
+
+            bossQuip("[Time to put on a show!]", this.talkTime + 250, 75, 500, 10)
+            this.talkTime = quipTimeCalc("[Time to put on a show!]", this.talkTime + 250, 75, 500, 10)
+
+            setTimeout((e) => {
+                this.halt = false
+                player.moveDisable = false
+                player.dashDisable = false
+                spawnDiamond()
+                bossInfo[selectedBoss].visited = true
+            }, this.talkTime)
         }
     }
 }
@@ -284,14 +323,14 @@ class Beyblade {
             bossQuip("[Yeah! I'm on a winning streak right now!]", 500, 50, 500, 10)
             this.talkTime = quipTimeCalc("[Yeah! I'm on a winning streak right now!]", 500, 50, 500, 10)
 
-            bossQuip("[You wanna go up next, tiny cube?]", this.talkTime + 50, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[You wanna go up next, loser?]", this.talkTime + 50, 50, 500, 10)
+            bossQuip("[You wanna go up next, Traveler?]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[You wanna go up next, Traveler?]", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Let's see if you can hang with the big dogs.]", this.talkTime + 50, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Let's see if you can hang with the big dogs.]", this.talkTime + 50, 50, 500, 10)
+            bossQuip("[Let's see if you can hang with the big dogs.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Let's see if you can hang with the big dogs.]", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[LET IT RIP!]", this.talkTime + 50, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[LET IT RIP!]", this.talkTime + 50, 50, 500, 10)
+            bossQuip("[LET IT RIP!]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[LET IT RIP!]", this.talkTime + 250, 50, 500, 10)
 
             setTimeout((e) => {
                 this.halt = false
@@ -320,14 +359,14 @@ class Rainman {
         this.phasePoint = 5
     }
     move(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
             this.x += Math.cos(this.angle) * (this.speed * delta)
             this.y += Math.sin(this.angle) * (this.speed * delta)
         }
     }
     attack(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             if (this.lastShot < 0) {
                 projectiles.push(new Projectile(Math.random() * canvas.width, 10, Math.PI / 2, Math.random() * 500 + 100, 10))
                 projectiles.push(new Projectile(Math.random() * canvas.width, 10, Math.PI / 2, Math.random() * 500 + 100, 10))
@@ -340,6 +379,45 @@ class Rainman {
             } else {
                 this.lastShot -= delta
             }
+        }
+    }
+	intro() {   
+        if (bossInfo[selectedBoss].visited) {
+            this.halt = false
+            player.moveDisable = false
+            player.dashDisable = false
+            player.holdRight = false
+            spawnDiamond()
+
+            bossQuip("[Leave my home.]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Leave my home.]", 500, 50, 500, 10)
+        } else {
+            this.talkTime = 0
+            this.halt = true
+            player.moveDisable = true
+            player.x = -10 - player.size/2
+            player.holdRight = true
+
+            setInterval((e) => {
+                player.holdRight = false
+            }, 1000)
+
+            bossQuip("[I have shown you no aggression, Traveler.]", 500, 60, 500, 10)
+            this.talkTime = quipTimeCalc("[I have shown you no aggression, Traveler.]", 500, 60, 500, 10)
+
+            bossQuip("[And still, you bring brutality and terror to my home.]", this.talkTime + 250, 60, 500, 10)
+            this.talkTime = quipTimeCalc("[And still, you bring brutality and terror to my home.]", this.talkTime + 250, 60, 500, 10)
+
+			bossQuip("[And for this, I will not stand.]", this.talkTime + 250, 60, 500, 10)
+            this.talkTime = quipTimeCalc("[And for this, I will not stand.]", this.talkTime + 250, 60, 500, 10)
+
+            setTimeout((e) => {
+                this.halt = false
+                player.moveDisable = false
+                player.dashDisable = false
+                spawnDiamond()
+                bossInfo[selectedBoss].visited = true
+            }, this.talkTime)
         }
     }
 }
@@ -365,14 +443,14 @@ class Tsunami {
         this.phasePoint = 5
     }
     move(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
             this.x += Math.cos(this.angle) * (this.speed * delta)
             this.y += Math.sin(this.angle) * (this.speed * delta)
         }
     }
     attack(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             if (this.lastShot < 0) {
                 this.random = Math.floor(Math.random() * 4) + 1
                 if (this.random == 1) {
@@ -416,7 +494,48 @@ class Tsunami {
                 this.lastShot2 -= delta
             }
         }
+    }
+	intro() {   
+        if (bossInfo[selectedBoss].visited) {
+            this.halt = false
+            player.moveDisable = false
+            player.dashDisable = false
+            player.holdRight = false
+            spawnDiamond()
 
+            bossQuip("[I will fight with all my strength.]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[I will fight with all my strength.]", 500, 50, 500, 10)
+        } else {
+            this.talkTime = 0
+            this.halt = true
+            player.moveDisable = true
+            player.x = -10 - player.size/2
+            player.holdRight = true
+
+            setInterval((e) => {
+                player.holdRight = false
+            }, 1000)
+
+            bossQuip("[Traveler...]", 500, 100, 500, 10)
+            this.talkTime = quipTimeCalc("[Traveler...]", 500, 100, 500, 10)
+
+            bossQuip("[What a bitter name...]", this.talkTime + 250, 75, 500, 10)
+            this.talkTime = quipTimeCalc("[What a bitter name...]", this.talkTime + 250, 75, 500, 10)
+
+			bossQuip("[Even if I am no longer king...]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Even if I am no longer king...]", this.talkTime + 250, 50, 500, 10)
+
+			bossQuip("[I will stop you with all my strength.]", this.talkTime + 250, 50, 700, 10)
+            this.talkTime = quipTimeCalc("[I will stop you with all my strength.]", this.talkTime + 250, 50, 700, 10)
+
+            setTimeout((e) => {
+                this.halt = false
+                player.moveDisable = false
+                player.dashDisable = false
+                spawnDiamond()
+                bossInfo[selectedBoss].visited = true
+            }, this.talkTime)
+        }
     }
 }
 class Starfish {
@@ -436,14 +555,14 @@ class Starfish {
         this.phasePoint = 5
     }
     move(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
             this.x += Math.cos(this.angle) * (this.speed * delta)
             this.y += Math.sin(this.angle) * (this.speed * delta)
         }
     }
     attack(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             if (this.lastShot < 0) {
                 if (this.health > this.phasePoint) {
                     for (let i = 0; i < Math.PI * 2; i += Math.PI * 2 / 5) {
@@ -462,6 +581,51 @@ class Starfish {
             } else {
                 this.lastShot -= delta
             }
+        }
+    }
+	intro() {   
+        if (bossInfo[selectedBoss].visited) {
+            this.halt = false
+            player.moveDisable = false
+            player.dashDisable = false
+            player.holdRight = false
+            spawnDiamond()
+
+            bossQuip("[Fixin' for a standoff, Traveler?]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Fixin' for a standoff, Traveler?]", 500, 50, 500, 10)
+        } else {
+            this.talkTime = 0
+            this.halt = true
+            player.moveDisable = true
+            player.x = -10 - player.size/2
+            player.holdRight = true
+
+            setInterval((e) => {
+                player.holdRight = false
+            }, 1000)
+
+            bossQuip("[Stop your steppin' scoundrel.]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Stop your steppin' scoundrel.]", 500, 50, 500, 10)
+
+            bossQuip("[Makin' a name for yourself eh?]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Makin' a name for yourself eh?]", this.talkTime + 250, 50, 500, 10)
+
+			bossQuip("[And I reckon I'm your next target.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[And I reckon I'm your next target.]", this.talkTime + 250, 50, 500, 10)
+
+            bossQuip("[Well then...]", this.talkTime + 250, 150, 500, 10)
+            this.talkTime = quipTimeCalc("[Well then...]", this.talkTime + 250, 150, 500, 10)
+
+            bossQuip("[DRAW!]", this.talkTime + 250, 25, 500, 10)
+            this.talkTime = quipTimeCalc("[DRAW!]", this.talkTime + 250, 25, 500, 10)
+
+            setTimeout((e) => {
+                this.halt = false
+                player.moveDisable = false
+                player.dashDisable = false
+                spawnDiamond()
+                bossInfo[selectedBoss].visited = true
+            }, this.talkTime)
         }
     }
 }
@@ -500,14 +664,14 @@ class Harbinger {
         }
     }
     move(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
             this.x += Math.cos(this.angle) * (this.speed * delta)
             this.y += Math.sin(this.angle) * (this.speed * delta)
         }
     }
     attack(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             if (this.lastShot < 0) {
                 if (!this.swapUD) {
                     for (let i = 0; i <= canvas.width; i += canvas.width / 60) {
@@ -598,6 +762,57 @@ class Harbinger {
             }, 3000)
         }, 5000)
     }
+	intro() {   
+        if (bossInfo[selectedBoss].visited) {
+            this.halt = false
+            player.moveDisable = false
+            player.dashDisable = false
+            player.holdRight = false
+            spawnDiamond()
+
+            bossQuip("[Why do you return?]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Why do you return?]", 500, 50, 500, 10)
+        } else {
+            this.talkTime = 0
+            this.halt = true
+            player.moveDisable = true
+            player.x = -10 - player.size/2
+            player.holdRight = true
+
+            setInterval((e) => {
+                player.holdRight = false
+            }, 1000)
+
+            bossQuip("[Human spirit...]", 2000, 150, 500, 10)
+            this.talkTime = quipTimeCalc("[Human spirit...]", 2000, 150, 500, 25)
+
+            bossQuip("[I know who you are...]", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("[I know who you are...]", this.talkTime + 250, 80, 500, 25)
+
+			bossQuip("[I know what you are...]", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("[I know what you are...]", this.talkTime + 250, 80, 500, 25)
+
+            bossQuip("[No more than a pawn...]", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("[No more than a pawn...]", this.talkTime + 250, 80, 500, 25)
+
+			bossQuip("[Who doesn't know their role in this.]", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("[Who doesn't know their role in this.]", this.talkTime + 250, 80, 500, 25)
+
+			bossQuip("[I warn you...]", this.talkTime + 250, 100, 500, 25)
+            this.talkTime = quipTimeCalc("[I warn you...]", this.talkTime + 250, 100, 500, 25)
+
+			bossQuip("[You will bring about your own destruction.]", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("[You will bring about your own destruction.]", this.talkTime + 250, 80, 500, 25)
+
+            setTimeout((e) => {
+                this.halt = false
+                player.moveDisable = false
+                player.dashDisable = false
+                spawnDiamond()
+                bossInfo[selectedBoss].visited = true
+            }, this.talkTime)
+        }
+    }
 }
 class Tutorial {
     constructor(maxHealth, speed, fireRate) {
@@ -643,41 +858,41 @@ class Tutorial {
             bossQuip("[Hello, Human Spirit.]", 500, 50, 500, 10)
             this.talkTime = quipTimeCalc("[Hello, Human Spirit.]", 500, 50, 500, 10)
 
-            bossQuip("[My name is #####, and I have chosen you as my warrior.]", this.talkTime + 50, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[My name is #####, and I have chosen you as my warrior.]", this.talkTime + 50, 50, 500, 10)
+            bossQuip("[My name is #####, and I have chosen you as my warrior.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[My name is #####, and I have chosen you as my warrior.]", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Many evil beings have taken over this land.]", this.talkTime + 50, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Many evil beings have taken over this land.]", this.talkTime + 50, 50, 500, 10)
+            bossQuip("[Many evil beings have taken over this land.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Many evil beings have taken over this land.]", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Now I need you too seek them out and destroy them.]", this.talkTime + 50, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Now I need you too seek them out and destroy them.]", this.talkTime + 50, 50, 500, 10)
+            bossQuip("[Now I need you too seek them out and destroy them.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Now I need you too seek them out and destroy them.]", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[You are the only hope left.]", this.talkTime + 50, 100, 500, 10)
-            this.talkTime = quipTimeCalc("[You are the only hope left.]", this.talkTime + 50, 100, 500, 10)
+            bossQuip("[You are the only hope left.]", this.talkTime + 250, 100, 500, 10)
+            this.talkTime = quipTimeCalc("[You are the only hope left.]", this.talkTime + 250, 100, 500, 10)
 
             setTimeout((e) => {
                 player.moveDisable = false
             }, this.talkTime)
-            bossQuip("[Use 'WASD' or 'ARROW KEYS' to move.]", this.talkTime + 50, 50, 1000, 10)
-            this.talkTime = quipTimeCalc("[Use 'WASD' or 'ARROW KEYS' to move.]", this.talkTime + 50, 50, 1000, 10)
+            bossQuip("[Use 'WASD' or 'ARROW KEYS' to move.]", this.talkTime + 250, 50, 1000, 10)
+            this.talkTime = quipTimeCalc("[Use 'WASD' or 'ARROW KEYS' to move.]", this.talkTime + 250, 50, 1000, 10)
 
-            bossQuip("[I have also given you some of my power.]", this.talkTime + 50, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[I have also given you some of my power.]", this.talkTime + 50, 50, 500, 10)
+            bossQuip("[I have also given you some of my power.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[I have also given you some of my power.]", this.talkTime + 250, 50, 500, 10)
 
             setTimeout((e) => {
                 player.dashDisable = false
             }, this.talkTime)
-            bossQuip("[Use 'SPACE' or 'SHIFT' to dash through projectiles.]", this.talkTime + 50, 50, 1000, 10)
-            this.talkTime = quipTimeCalc("[Use 'SPACE' or 'SHIFT' to dash through projectiles.]", this.talkTime + 50, 50, 1000, 10)
+            bossQuip("[Use 'SPACE' or 'SHIFT' to dash through projectiles.]", this.talkTime + 250, 50, 1000, 10)
+            this.talkTime = quipTimeCalc("[Use 'SPACE' or 'SHIFT' to dash through projectiles.]", this.talkTime + 250, 50, 1000, 10)
             
             setTimeout((e) => {
                 spawnDiamond()
             }, this.talkTime)
-            bossQuip("[Now collect these diamond and begin your conquest.]", this.talkTime + 50, 50, 1000, 10)
-            this.talkTime = quipTimeCalc("[Now collect these diamonds and begin your conquest.]", this.talkTime + 50, 50, 1000, 10)
+            bossQuip("[Now collect these diamond and begin your conquest.]", this.talkTime + 250, 50, 1000, 10)
+            this.talkTime = quipTimeCalc("[Now collect these diamonds and begin your conquest.]", this.talkTime + 250, 50, 1000, 10)
 
-            bossQuip("[I will be watching...]", this.talkTime + 500, 100, 500, 10)
-            this.talkTime = quipTimeCalc("[I will be watching...]", this.talkTime + 500, 100, 500, 10)
+            bossQuip("[I will be watching...]", this.talkTime + 2500, 100, 500, 10)
+            this.talkTime = quipTimeCalc("[I will be watching...]", this.talkTime + 2500, 100, 500, 10)
         
     }
 }
@@ -700,14 +915,14 @@ class Monk {
         this.phasePoint = 5
     }
     move(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
             this.x += Math.cos(this.angle) * (this.speed * delta)
             this.y += Math.sin(this.angle) * (this.speed * delta)
         }
     }
     attack(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             if (this.lastShot < 0) {
 				if (this.health > this.phasePoint) {
 					this.burstAmount = Math.ceil(Math.random() * 5) + 3
@@ -743,6 +958,48 @@ class Monk {
                 this.lastShot2 -= delta
 				console.log(this.lastShot2)
             }
+        }
+    }
+	intro() {   
+        if (bossInfo[selectedBoss].visited) {
+            this.halt = false
+            player.moveDisable = false
+            player.dashDisable = false
+            player.holdRight = false
+            spawnDiamond()
+
+            bossQuip("[Join the light, Traveler.]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Join the light, Traveler.]", 500, 50, 500, 10)
+        } else {
+            this.talkTime = 0
+            this.halt = true
+            player.moveDisable = true
+            player.x = -10 - player.size/2
+            player.holdRight = true
+
+            setInterval((e) => {
+                player.holdRight = false
+            }, 1000)
+
+            bossQuip("[Hello, Traveler.]", 500, 75, 500, 10)
+            this.talkTime = quipTimeCalc("[Hello, Traveler.]", 500, 75, 500, 10)
+
+            bossQuip("[You have made quite the mess.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[You have made quite the mess.]", this.talkTime + 250, 50, 500, 10)
+
+			bossQuip("[But I still see good in you.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[But I still see good in you.]", this.talkTime + 250, 50, 500, 10)
+
+			bossQuip("[Cast aside this dark path you walk, and join the light.]", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Cast aside this dark path you walk, and join the light.]", this.talkTime + 250, 50, 500, 10)
+
+            setTimeout((e) => {
+                this.halt = false
+                player.moveDisable = false
+                player.dashDisable = false
+                spawnDiamond()
+                bossInfo[selectedBoss].visited = true
+            }, this.talkTime)
         }
     }
 }
