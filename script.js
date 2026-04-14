@@ -13,9 +13,16 @@ class Player {
         this.dashDirX = 0
         this.dashDirY = 0
         this.dashFrame = 0
+
 		this.dashDisable = false
+        this.moveDisable = false
 
         this.size = 20
+
+        this.holdUp = false
+        this.holdDown = false
+        this.holdLeft = false
+        this.holdRight = false
     }
 }
 // Versatile
@@ -34,7 +41,7 @@ class Diamond {
             this.x = Math.floor(Math.random() * 1160) + 101
             this.y = Math.floor(Math.random() * 568) + 101
             this.distance = (player.x - this.x) ** 2 + (player.y - this.y) ** 2
-        } while (this.distance < 400000 || this.x > currentBoss.x && this.x < currentBoss.x + currentBoss.size && this.y > currentBoss.y && this.y < currentBoss.y + currentBoss.size);
+        } while ((this.distance < 400000) || (this.x > currentBoss.x && this.x < currentBoss.x + currentBoss.size && this.y > currentBoss.y && this.y < currentBoss.y + currentBoss.size));
         this.fly = false
         this.flySpeed = -400
         this.color = "#dddd33"
@@ -55,7 +62,7 @@ class Diamond {
                     diamonds.splice(i, 1)
                     shake(25, 10)
                     if (currentBoss.health == 0) {
-                        if (selectedBoss == 8 && currentBoss.phase == 1) {
+                        if (selectedBoss == 9 && currentBoss.phase == 1) {
                             for (let i = 0; i < 120; i++) {
                                 setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
                             }
@@ -104,17 +111,19 @@ class Charger {
         this.color = "#FF1A1A"
 
         this.phasePoint = 6
-        this.quipping = false
+        this.halt = false
+
+        
     }
     move(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
             this.x += Math.cos(this.angle) * (this.speed * delta)
             this.y += Math.sin(this.angle) * (this.speed * delta)
         }
     }
     attack(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             if (this.lastShot < 0) {
                 projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.PI / 2, 500, 10))
                 projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.PI / -2, 500, 10))
@@ -128,56 +137,44 @@ class Charger {
             }
         }
     }
-    quip(type) {
-        if (type == "playerDeath" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Try dashing.]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
+    intro() {   
+        if (bossInfo[selectedBoss].visited) {
+            this.halt = false
+            player.moveDisable = false
+            player.dashDisable = false
+            player.holdRight = false
+            spawnDiamond()
+
+            bossQuip("[You're not getting any further.]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[You're not getting any further.]", 500, 50, 500, 10)
+        } else {
+            this.talkTime = 0
+            this.halt = true
+            player.moveDisable = true
+            player.x = -10 - player.size/2
+            player.holdRight = true
+
+            setInterval((e) => {
+                player.holdRight = false
+            }, 1000)
+
+            bossQuip("[Woah, woah! Slow your roll their pal.]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Woah, woah! Slow your roll their pal.]", 500, 50, 500, 10)
+
+            bossQuip("[I can't let you get any further.]", this.talkTime + 50, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[I can't let you get any further.]", this.talkTime + 50, 50, 500, 10)
+
+            bossQuip("[Best you turn around, before someone gets hurt.]", this.talkTime + 50, 100, 500, 10)
+            this.talkTime = quipTimeCalc("[Best you turn around, before someone gets hurt.]", this.talkTime + 50, 100, 500, 10)
+
             setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "phase" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Are you prepared?]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "start" && !this.quipping) {
-			this.quipping = true
-            this.quipList = [
-                "[Ready for a scuffle, friend?]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-		}
+                this.halt = false
+                player.moveDisable = false
+                player.dashDisable = false
+                spawnDiamond()
+                bossInfo[selectedBoss].visited = true
+            }, this.talkTime)
+        }
     }
 }
 class Ringmaster {
@@ -222,58 +219,6 @@ class Ringmaster {
             }
         }
     }
-    quip(type) {
-        if (type == "playerDeath" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[The crowd goes wild!]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "phase" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[For Rico...]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "start" && !this.quipping) {
-			this.quipping = true
-            this.quipList = [
-                "[Welcome to the show!]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-		}
-
-    }
 }
 class Beyblade {
     constructor(maxHealth, speed, fireRate) {
@@ -292,14 +237,14 @@ class Beyblade {
         this.phasePoint = 5
     }
     move(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             this.angle = Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2))
             this.x += Math.cos(this.angle) * (this.speed * delta)
             this.y += Math.sin(this.angle) * (this.speed * delta)
         }
     }
     attack(delta) {
-        if (this.health > 0) {
+        if (this.health > 0 && !this.halt) {
             if (this.lastShot < 0) {
                 projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), this.spin, 600, 10))
                 if (this.health <= this.phasePoint) {
@@ -315,56 +260,47 @@ class Beyblade {
             }
         }
     }
-    quip(type) {
-        if (type == "playerDeath" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Motion sick?]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
+    intro() {   
+        if (bossInfo[selectedBoss].visited) {
+            this.halt = false
+            player.moveDisable = false
+            player.dashDisable = false
+            player.holdRight = false
+            spawnDiamond()
+
+            bossQuip("[LET IT RIP!]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[LET IT RIP!]", 500, 50, 500, 10)
+        } else {
+            this.talkTime = 0
+            this.halt = true
+            player.moveDisable = true
+            player.x = -10 - player.size/2
+            player.holdRight = true
+
+            setInterval((e) => {
+                player.holdRight = false
+            }, 1000)
+
+            bossQuip("[Yeah! I'm on a winning streak right now!]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Yeah! I'm on a winning streak right now!]", 500, 50, 500, 10)
+
+            bossQuip("[You wanna go up next, tiny cube?]", this.talkTime + 50, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[You wanna go up next, loser?]", this.talkTime + 50, 50, 500, 10)
+
+            bossQuip("[Let's see if you can hang with the big dogs.]", this.talkTime + 50, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Let's see if you can hang with the big dogs.]", this.talkTime + 50, 50, 500, 10)
+
+            bossQuip("[LET IT RIP!]", this.talkTime + 50, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[LET IT RIP!]", this.talkTime + 50, 50, 500, 10)
+
             setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "phase" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[I need to go faster!]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "start" && !this.quipping) {
-			this.quipping = true
-            this.quipList = [
-                "[LET IT RIP!]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-		}
+                this.halt = false
+                player.moveDisable = false
+                player.dashDisable = false
+                spawnDiamond()
+                bossInfo[selectedBoss].visited = true
+            }, this.talkTime)
+        }
     }
 }
 class Rainman {
@@ -405,57 +341,6 @@ class Rainman {
                 this.lastShot -= delta
             }
         }
-    }
-    quip(type) {
-        if (type == "playerDeath" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Wash away...]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "phase" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Give me peace...]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "start" && !this.quipping) {
-			this.quipping = true
-            this.quipList = [
-                "[I have no qualms with you.]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-		}
     }
 }
 
@@ -533,57 +418,6 @@ class Tsunami {
         }
 
     }
-    quip(type) {
-        if (type == "playerDeath" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[The tide sweeps all!]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "phase" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[I used to be a king!]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "start" && !this.quipping) {
-			this.quipping = true
-            this.quipList = [
-                "[Arrogant little cube.]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-		}
-    }
 }
 class Starfish {
     constructor(maxHealth, speed, fireRate) {
@@ -629,57 +463,6 @@ class Starfish {
                 this.lastShot -= delta
             }
         }
-    }
-    quip(type) {
-        if (type == "playerDeath" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Nice try, crook.]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "phase" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Five? Why not six?]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "start" && !this.quipping) {
-			this.quipping = true
-            this.quipList = [
-                "[End of the line, rapscallion.]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-		}
     }
 }
 class Harbinger {
@@ -815,59 +598,6 @@ class Harbinger {
             }, 3000)
         }, 5000)
     }
-    quip(type) {
-        if (type == "playerDeath" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[You poor fool.]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "phase" && !this.quipping) {
-            setTimeout((e) => {
-                this.quipping = true
-                this.quipList = [
-                    "[This is your own undoing...]"
-                ]
-                this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-                this.currentQuip = ""
-                for (let i = 0; i < this.selectedQuip.length; i++) {
-                    setTimeout((e) => {
-                        this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                    }, 20 + (20 * i))
-                }
-                setTimeout((e) => {
-                    this.currentQuip = ""
-                    this.quipping = false
-                }, 500 + (50 * this.selectedQuip.length))
-            }, 3000);
-        } else if (type == "start" && !this.quipping) {
-			this.quipping = true
-            this.quipList = [
-                "[You don't know the weight of your actions.]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-		}
-    }
 }
 class Tutorial {
     constructor(maxHealth, speed, fireRate) {
@@ -905,134 +635,50 @@ class Tutorial {
             }
         }
     }
-    quip(type) {
-        if (type == "playerDeath" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Seriously?]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "phase" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Are you prepared?]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "start" && !this.quipping) {
-			this.quipping = true
-            this.quipList = [
-                "[Hello, Human Spirit, you will be my warrior.]",
-				"[You need to defeat the ones plaguing this world.]",
-				"[So that my rule may see fruition.]",
-				"[Move with 'WASD' or 'ARROW KEYS']",
-				"[I have also given you a fragment of my power.]",
-				"[Press 'SPACE' to dash through projectiles.]",
-				"[Collect the diamonds and begin your conquest.]",
-				"[I will be watching...]"
-            ]
-            this.selectedQuip = this.quipList[0]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (25 * i))
-            }
+    intro() {
+            this.talkTime = 0
+            this.halt = true
+            player.moveDisable = true
+
+            bossQuip("[Hello, Human Spirit.]", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Hello, Human Spirit.]", 500, 50, 500, 10)
+
+            bossQuip("[My name is #####, and I have chosen you as my warrior.]", this.talkTime + 50, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[My name is #####, and I have chosen you as my warrior.]", this.talkTime + 50, 50, 500, 10)
+
+            bossQuip("[Many evil beings have taken over this land.]", this.talkTime + 50, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Many evil beings have taken over this land.]", this.talkTime + 50, 50, 500, 10)
+
+            bossQuip("[Now I need you too seek them out and destroy them.]", this.talkTime + 50, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[Now I need you too seek them out and destroy them.]", this.talkTime + 50, 50, 500, 10)
+
+            bossQuip("[You are the only hope left.]", this.talkTime + 50, 100, 500, 10)
+            this.talkTime = quipTimeCalc("[You are the only hope left.]", this.talkTime + 50, 100, 500, 10)
 
             setTimeout((e) => {
-                this.selectedQuip = this.quipList[1]
-            	this.currentQuip = ""
-            	for (let i = 0; i < this.selectedQuip.length; i++) {
-            	    setTimeout((e) => {
-                    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
-            	    }, 25 + (25 * i))
-            	}
+                player.moveDisable = false
+            }, this.talkTime)
+            bossQuip("[Use 'WASD' or 'ARROW KEYS' to move.]", this.talkTime + 50, 50, 1000, 10)
+            this.talkTime = quipTimeCalc("[Use 'WASD' or 'ARROW KEYS' to move.]", this.talkTime + 50, 50, 1000, 10)
 
-				setTimeout((e) => {
-                	this.selectedQuip = this.quipList[2]
-            		this.currentQuip = ""
-            		for (let i = 0; i < this.selectedQuip.length; i++) {
-            		    setTimeout((e) => {
-                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
-            		    }, 25 + (25 * i))
-            		}
-					setTimeout((e) => {
-                	this.selectedQuip = this.quipList[3]
-            		this.currentQuip = ""
-            		for (let i = 0; i < this.selectedQuip.length; i++) {
-            		    setTimeout((e) => {
-                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
-            		    }, 25 + (25 * i))
-            		}
-					setTimeout((e) => {
-                	this.selectedQuip = this.quipList[4]
-            		this.currentQuip = ""
-            		for (let i = 0; i < this.selectedQuip.length; i++) {
-            		    setTimeout((e) => {
-                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
-            		    }, 25 + (25 * i))
-            		}
-					setTimeout((e) => {
-                	this.selectedQuip = this.quipList[5]
-            		this.currentQuip = ""
-					player.dashDisable = false
-					player.dashCoolDown = .5
-					setTimeout((e) => {
-            		    playerPulse = 1
-            		}, 500)
-            		for (let i = 0; i < this.selectedQuip.length; i++) {
-            		    setTimeout((e) => {
-                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
-            		    }, 25 + (25 * i))
-            		}
-					setTimeout((e) => {
-                	this.selectedQuip = this.quipList[6]
-            		this.currentQuip = ""
-					diamonds.push(new Diamond())
-            		for (let i = 0; i < this.selectedQuip.length; i++) {
-            		    setTimeout((e) => {
-                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
-            		    }, 25 + (25 * i))
-            		}
-					setTimeout((e) => {
-                	this.selectedQuip = this.quipList[7]
-            		this.currentQuip = ""
-            		for (let i = 0; i < this.selectedQuip.length; i++) {
-            		    setTimeout((e) => {
-                	    	this.currentQuip = this.currentQuip + this.selectedQuip[i]
-            		    }, 25 + (25 * i))
-            		}
-					setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-            	}, 500 + (50 * this.selectedQuip.length))
-            	}, 500 + (50 * this.selectedQuip.length))
-            	}, 500 + (50 * this.selectedQuip.length))
-            	}, 500 + (50 * this.selectedQuip.length))
-            	}, 500 + (50 * this.selectedQuip.length))
-            	}, 500 + (50 * this.selectedQuip.length))
-            }, 500 + (50 * this.selectedQuip.length))
-		}  
+            bossQuip("[I have also given you some of my power.]", this.talkTime + 50, 50, 500, 10)
+            this.talkTime = quipTimeCalc("[I have also given you some of my power.]", this.talkTime + 50, 50, 500, 10)
+
+            setTimeout((e) => {
+                player.dashDisable = false
+            }, this.talkTime)
+            bossQuip("[Use 'SPACE' or 'SHIFT' to dash through projectiles.]", this.talkTime + 50, 50, 1000, 10)
+            this.talkTime = quipTimeCalc("[Use 'SPACE' or 'SHIFT' to dash through projectiles.]", this.talkTime + 50, 50, 1000, 10)
+            
+            setTimeout((e) => {
+                spawnDiamond()
+            }, this.talkTime)
+            bossQuip("[Now collect these diamond and begin your conquest.]", this.talkTime + 50, 50, 1000, 10)
+            this.talkTime = quipTimeCalc("[Now collect these diamonds and begin your conquest.]", this.talkTime + 50, 50, 1000, 10)
+
+            bossQuip("[I will be watching...]", this.talkTime + 500, 100, 500, 10)
+            this.talkTime = quipTimeCalc("[I will be watching...]", this.talkTime + 500, 100, 500, 10)
+        
     }
 }
 class Monk {
@@ -1099,58 +745,6 @@ class Monk {
             }
         }
     }
-    quip(type) {
-        if (type == "playerDeath" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[You could have done so much good.]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "phase" && !this.quipping) {
-            this.quipping = true
-            this.quipList = [
-                "[Such potential...]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-        } else if (type == "start" && !this.quipping) {
-			this.quipping = true
-            this.quipList = [
-                "[You can choose a better path.]"
-            ]
-            this.selectedQuip = this.quipList[Math.floor(Math.random() * this.quipList.length)]
-            this.currentQuip = ""
-            for (let i = 0; i < this.selectedQuip.length; i++) {
-                setTimeout((e) => {
-                    this.currentQuip = this.currentQuip + this.selectedQuip[i]
-                }, 20 + (20 * i))
-            }
-            setTimeout((e) => {
-                this.currentQuip = ""
-                this.quipping = false
-            }, 500 + (50 * this.selectedQuip.length))
-		}
-
-    }
 }
 
 // projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2)), 600, 10))
@@ -1167,24 +761,14 @@ const htpMenu = document.getElementById("htpMenu")
 const attemptCounter = document.getElementById("attemptCounter")
 const htpq2 = document.getElementById("htpq2")
 const bossList = [
-    "TUTORIAL", "CHARGER", "BEYBLADE", "STARFISH", "RINGMASTER", "RAINMAN", "MONK", "TSUNAMI", "HARBINGER"
+    "LISTSTART", "TUTORIAL", "CHARGER", "BEYBLADE", "STARFISH", "RINGMASTER", "RAINMAN", "MONK", "TSUNAMI", "HARBINGER", "LISTEND"
 ]
 const keys = {}
 const player = new Player(0, 400)
 const projectiles = []
 const diamonds = []
 const particles = []
-const attempts = {
-    0: 0,
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-    6: 0,
-	7: 0,
-	8: 0,
-}
+const bossInfo = [{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},]
 
 const enableSound = new Audio("audio/enableSound.mp3")
 const playerDeathSound = new Audio("audio/playerDeathSound.mp3")
@@ -1193,19 +777,50 @@ const diamondCollectSound = new Audio("audio/diamondCollectSound.mp3")
 const bossHurtSound = new Audio("audio/bossHurtSound.mp3")
 const bossDeathSound = new Audio("audio/bossDeathSound.mp3")
 const bossPhaseSound = new Audio("audio/bossPhaseSound.mp3")
+
+const tutorialSong = new Audio("audio/orchestralAura.mp3")
+const chargerSong = new Audio("audio/headBangerLoop.mp3")
+const beyBladeSong = new Audio("audio/robotDnB.mp3")
+const starFishSong = new Audio("audio/synfulSub.mp3")
+const ringMasterSong = new Audio("audio/beginningOfTime.mp3")
+const rainManSong = new Audio("audio/theoryOfEverything2.mp3")
+const monkSong = new Audio("audio/freedomOftrance.mp3")
+const tsunamiSong = new Audio("audio/thermodynamix.mp3")
+const harbingerSong = new Audio("audio/evilLoop.mp3")
+
+chargerSong.volume = 0
 // Vars
 let lastTime = 0; // time on last frame
 let currentBoss;
-let selectedBoss = 0;
+let selectedBoss = 1;
 let globalOffsetX = 0;
 let globalOffsetY = 0;
 
 let bossPulse = 0
 let playerPulse = 0
 
+let musicVolume = 1
+
+let bossQuipText = ""
+
 // Event Listeners
 document.addEventListener("keydown", (e) => {
     keys[e.key.toLowerCase()] = true;
+    
+    // Menu Navigations
+    if (e.key.toLowerCase() == "enter" && currentBoss == undefined) start()
+    if (e.key.toLowerCase() == "arrowright" && currentBoss == undefined) cycleBoss(1)
+    if (e.key.toLowerCase() == "arrowleft" && currentBoss == undefined) cycleBoss(-1)
+
+    // Volume Control
+    if (e.key.toLowerCase() == "v") {
+        let userVolumeInput = parseInt(prompt("Set volume (0-100)"))
+        if (isNaN(userVolumeInput) || userVolumeInput < 0 || userVolumeInput > 100) {
+            alert("Please enter a number 0-100")
+        } else {
+            musicVolume = userVolumeInput/100
+        }
+    }
 });
 document.addEventListener("keyup", (e) => {
     keys[e.key.toLowerCase()] = false;
@@ -1217,56 +832,54 @@ document.addEventListener("click", (e) => {
 });
 
 // Menu
-function cycleBoss() {
-    selectedBoss++
-    if (bossList[selectedBoss] != undefined) {
+function cycleBoss(amount) {
+    selectedBoss += amount
+    if (bossList[selectedBoss] == "LISTEND") {
+        selectedBoss = 1
+        bossSelect.textContent = bossList[selectedBoss]
+    } else if (bossList[selectedBoss] == "LISTSTART") {
+        selectedBoss = bossList.length - 2
         bossSelect.textContent = bossList[selectedBoss]
     } else {
-        selectedBoss = 0
         bossSelect.textContent = bossList[selectedBoss]
     }
-    attemptCounter.innerHTML = attempts[selectedBoss]
+    attemptCounter.innerHTML = bossInfo[selectedBoss].attempts
 }
 
 function start() { // IMPORTANT
-	if (selectedBoss == 0) {
-        spawnBoss(new Tutorial(3, 0, 0))
-    } else if (selectedBoss == 1) {
-        spawnBoss(new Charger(10, 225, .1))
+	if (selectedBoss == 1) {
+        spawnBoss(new Tutorial(3, 0, .03))
     } else if (selectedBoss == 2) {
-        spawnBoss(new Beyblade(10, 170, .02))
+        spawnBoss(new Charger(10, 225, .1))
     } else if (selectedBoss == 3) {
-        spawnBoss(new Starfish(10, 130, .25))
+        spawnBoss(new Beyblade(10, 170, .02))
     } else if (selectedBoss == 4) {
-        spawnBoss(new Ringmaster(10, 150, 1.8))
+        spawnBoss(new Starfish(10, 130, .25))
     } else if (selectedBoss == 5) {
-        spawnBoss(new Rainman(10, 120, .2))
+        spawnBoss(new Ringmaster(10, 150, 1.8))
     } else if (selectedBoss == 6) {
-        spawnBoss(new Monk(10, 20, 2, .15))
+        spawnBoss(new Rainman(10, 120, .2))
     } else if (selectedBoss == 7) {
-        spawnBoss(new Tsunami(10, 135, 1.8, .5))
+        spawnBoss(new Monk(10, 20, 2, .15))
     } else if (selectedBoss == 8) {
+        spawnBoss(new Tsunami(10, 135, 1.8, .5))
+    } else if (selectedBoss == 9) {
         spawnBoss(new Harbinger(10, 165, 4, 5, .05, 5, .5))
     }
-	if (selectedBoss == 0) {
+	if (selectedBoss == 1) {
 		player.dashDisable = true
 	} else {
 		player.dashDisable = false
 	}
-    attempts[selectedBoss] += 1
-    attemptCounter.innerHTML = attempts[selectedBoss]
+    bossInfo[selectedBoss].attempts += 1
+    attemptCounter.innerHTML = bossInfo[selectedBoss].attempts
     player.health = 1
     player.x = canvas.width/5 - 10
     player.y = canvas.height/2- 10
     projectiles.splice(0, projectiles.length)
     menu.classList.add("hide")
     diamonds.splice(0, diamonds.length)
-	if (selectedBoss != 0) {
-		diamonds.push(new Diamond())
-	}
-	setTimeout(() => {
-		currentBoss.quip("start")
-	}, 500);
+    currentBoss.intro()
 }
 
 function end() {
@@ -1274,12 +887,18 @@ function end() {
         projectiles.splice(0, projectiles.length)
         diamonds.splice(0, diamonds.length)
         menu.classList.remove("hide")
+        for (let i = 0; i < 300; i++) {
+            clearTimeout(i)
+        }
         currentBoss = undefined
     } else {
         setTimeout((e) => {
             projectiles.splice(0, projectiles.length)
             diamonds.splice(0, diamonds.length)
             menu.classList.remove("hide")
+            for (let i = 0; i < 300; i++) {
+            clearTimeout(i)
+        }
             currentBoss = undefined
         }, 1500)
     }
@@ -1299,11 +918,11 @@ function guide(tab) {
     if (tab == 1) {
         htpq2.innerHTML = `[WASD] OR [↑ ↓ ← →] </br></br> TIP: Hold down two directions to move faster`
     } else if (tab == 2) {
-        htpq2.innerHTML = `[SPACE] </br></br> Dashing provides immunity to attacks while it is active,</br> has a cooldown of .5s </br></br> TIP: Diagonal dashes go farther, the bar over your player tracks dash cooldown`
+        htpq2.innerHTML = `[SPACE] OR [SHIFT] </br></br> Dashing provides immunity to attacks while it is active,</br> has a cooldown of .5s </br></br> TIP: Diagonal dashes go farther, the bar over your player tracks dash cooldown`
     } else if (tab == 3) {
         htpq2.innerHTML = `Diamonds damage the boss when collected, 10 are needed to defeat a boss, they are your only source of damage </br></br> TIP: Diamonds are unable to spawn near you`
     } else if (tab == 4) {
-        htpq2.innerHTML = `It is up to you to learn how bosses work, what weakness they have and how you can exploit them </br></br> EXPECT HEAVY RESISTANCE`
+        htpq2.innerHTML = `It is up to you to learn how bosses work, what weakness they have and how you can exploit them </br></br> This won't be easy 😏`
     }
 }
 // Screen Draw 
@@ -1392,12 +1011,12 @@ function draw() {
         ctx.fillRect(currentBoss.x + globalOffsetX, currentBoss.y + globalOffsetY, currentBoss.size, currentBoss.size)
 
         // Quips
-        if (currentBoss.currentQuip != undefined) {
+        if (bossQuipText != undefined) {
 			ctx.shadowBlur = 0
             ctx.font = "15px monospace";       // size + font
             ctx.fillStyle = "#999";       // color
             ctx.textAlign = "center";
-            ctx.fillText(currentBoss.currentQuip, currentBoss.x + currentBoss.size / 2 + globalOffsetX, currentBoss.y - 10 + globalOffsetY); // text, x, y
+            ctx.fillText(bossQuipText, currentBoss.x + currentBoss.size / 2 + globalOffsetX, currentBoss.y - 10 + globalOffsetY); // text, x, y
         }
 
         // Boss Health Bar
@@ -1417,32 +1036,40 @@ function draw() {
         }
 
     }
+
 }
 // Player
 function playerMovement(delta) {
-    if (!player.dashing && player.health > 0) {
+    if (!player.dashing && player.health > 0 && !player.moveDisable) {
         if (keys.w || keys.arrowup) player.y -= player.speed * delta
         if (keys.s || keys.arrowdown) player.y += player.speed * delta
         if (keys.a || keys.arrowleft) player.x -= player.speed * delta
         if (keys.d || keys.arrowright) player.x += player.speed * delta
     }
 
-    if (player.x > canvas.width - 20) {
-        player.x = canvas.width - 20
-    }
-    if (player.x < 0) {
-        player.x = 0
-    }
-    if (player.y > canvas.height - 20) {
-        player.y = canvas.height - 20
-    }
-    if (player.y < 0) {
-        player.y = 0
+    if (player.holdUp) player.y -= player.speed * delta
+        if (player.holdDown) player.y += player.speed * delta
+        if (player.holdLeft) player.x -= player.speed * delta
+        if (player.holdRight) player.x += player.speed * delta
+
+    if (!player.moveDisable) {
+        if (player.x > canvas.width - 20) {
+            player.x = canvas.width - 20
+        }
+        if (player.x < 0) {
+            player.x = 0
+        }
+        if (player.y > canvas.height - 20) {
+            player.y = canvas.height - 20
+        }
+        if (player.y < 0) {
+            player.y = 0
+        }
     }
 }
 
 function dash(delta) {
-    if (keys[" "] && player.dashDirX == 0 && player.dashDirY == 0 && player.dashCoolDown <= 0 && player.health > 0 && currentBoss != undefined && !player.dashDisable) {
+    if ((keys[" "] ||keys["shift"]) && player.dashDirX == 0 && player.dashDirY == 0 && player.dashCoolDown <= 0 && player.health > 0 && currentBoss != undefined && !player.dashDisable) {
         if (keys.w || keys.arrowup) player.dashDirY -= 1500
         if (keys.s || keys.arrowdown) player.dashDirY += 1500
         if (keys.a || keys.arrowleft) player.dashDirX -= 1500
@@ -1476,7 +1103,6 @@ function bossCol() {
     if (player.x + 10 > currentBoss.x && player.x + 10 < currentBoss.x + currentBoss.size + 10 && player.y + 10 > currentBoss.y - 10 && player.y + 10 < currentBoss.y + currentBoss.size && player.dashing == false) {
         player.health--
         if (player.health == 0) {
-            currentBoss.quip("playerDeath")
             shake(7, 30)
             playerDeathSound.play()
             end()
@@ -1491,6 +1117,28 @@ function spawnBoss(type) {
     currentBoss = type;
 }
 
+// Quips
+function bossQuip(quip, wait, quipTypeSpeed, quipIdleTime, quipFoldSpeed) {
+    setTimeout((e) => {
+        for (let i = 0; i < quip.length; i++) {
+            setTimeout((e) => {
+                bossQuipText += quip[i]
+            }, quipTypeSpeed * i)
+        }
+        setTimeout((e) => {
+            for (let i = 0; i <= quip.length; i++) {
+            setTimeout((e) => {
+                bossQuipText = quip.slice(0, quip.length - i)
+            }, quipFoldSpeed * i)
+        }
+        }, (quipTypeSpeed * quip.length) + quipIdleTime)
+    }, wait)
+}
+
+function quipTimeCalc(quip, wait, quipTypeSpeed, quipIdleTime, quipFoldSpeed) {
+    return wait + (quip.length * quipTypeSpeed) + quipIdleTime + (quip.length * quipFoldSpeed)
+}
+
 // Projectiles
 function projectilesMove(delta) {
     for (let i = 0; i < projectiles.length; i++) {
@@ -1503,7 +1151,6 @@ function projectileCol() {
         if (player.x + 10 > projectiles[i].x - projectiles[i].size && player.x + 10 < projectiles[i].x + projectiles[i].size && player.y + 10 > projectiles[i].y - projectiles[i].size && player.y + 10 < projectiles[i].y + projectiles[i].size && player.dashing == false) {
             player.health--
             if (player.health == 0) {
-                currentBoss.quip("playerDeath")
                 shake(7, 30)
                 playerDeathSound.play()
                 end()
@@ -1542,7 +1189,6 @@ function pickupDiamond() {
                     spawnDiamond()
                 }
                 if (currentBoss.health == currentBoss.phasePoint + 1 || currentBoss.health == currentBoss.phasePoint + 1 && currentBoss.phase == 1) {
-                    currentBoss.quip("phase")
                 }
                 for (let i = 0; i < diamonds.length; i++) {
                     for (let k = 0; k < 6; k++) {
@@ -1592,6 +1238,40 @@ function pulseControl(delta) {
     }
 }
 
+// Music Control
+function musicControl(delta) {
+    musicFade(delta, "TUTORIAL", tutorialSong)
+    musicFade(delta, "CHARGER", chargerSong)
+    musicFade(delta, "BEYBLADE", beyBladeSong)
+    musicFade(delta, "STARFISH", starFishSong)
+    musicFade(delta, "RINGMASTER", ringMasterSong)
+    musicFade(delta, "RAINMAN", rainManSong)
+    musicFade(delta, "MONK", monkSong)
+    musicFade(delta, "TSUNAMI", tsunamiSong)
+    musicFade(delta, "HARBINGER", harbingerSong)
+}
+
+function musicFade(delta, boss, song) {
+    if (bossList[selectedBoss] == boss && song.volume <= 1) {
+        song.play()
+
+        if (song.volume + delta/2 > musicVolume) {
+            song.volume = musicVolume
+        } else {
+            song.volume += delta/2
+        }
+    } else if (song.volume > 0) {
+
+        if (song.volume - delta/1.5 < 0) {
+            song.volume = 0
+            song.pause();
+            song.currentTime = 0;
+        } else {
+            song.volume -= delta/1.5
+        }
+    }
+}
+
 // Delta time / Loop functions
 function loop(time) {
 
@@ -1604,6 +1284,7 @@ function loop(time) {
     updateParticles(delta)
     dash(delta)
     pulseControl(delta)
+    musicControl(delta)
     pickupDiamond()
     projectileCol()
     if (keys["escape"]) {
