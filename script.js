@@ -113,6 +113,9 @@ class Charger {
         this.phasePoint = 6
         this.halt = false
 
+        this.phaseQuip = "[Test]"
+        this.playerDeathQuip = "[More Test]"
+
         
     }
     move(delta) {
@@ -145,8 +148,8 @@ class Charger {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("[You're not getting any further.]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[You're not getting any further.]", 500, 50, 500, 10)
+            bossQuip("You're not getting any further.", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("You're not getting any further.", 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -158,14 +161,14 @@ class Charger {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("[Woah, woah! Slow your roll there Traveler.]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Woah, woah! Slow your roll there Traveler.]", 500, 50, 500, 10)
+            bossQuip("Woah, woah! Slow your roll there Traveler.", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Woah, woah! Slow your roll there Traveler.", 500, 50, 500, 10)
 
-            bossQuip("[I can't let you get any further.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[I can't let you get any further.]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("I can't let you go any further.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("I can't let you get go further.", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Best you turn around, before someone gets hurt.]", this.talkTime + 250, 100, 500, 10)
-            this.talkTime = quipTimeCalc("[Best you turn around, before someone gets hurt.]", this.talkTime + 250, 100, 500, 10)
+            bossQuip("Best you turn around, before someone gets hurt.", this.talkTime + 250, 75, 500, 10)
+            this.talkTime = quipTimeCalc("Best you turn around, before someone gets hurt.", this.talkTime + 250, 75, 500, 10)
 
             setTimeout((e) => {
                 this.halt = false
@@ -224,8 +227,8 @@ class Ringmaster {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("[Time to put on a show!]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Time to put on a show!]", 500, 50, 500, 10)
+            bossQuip("Time to put on a show!", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Time to put on a show!", 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -237,17 +240,17 @@ class Ringmaster {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("[And for my final act...]", 500, 100, 500, 10)
-            this.talkTime = quipTimeCalc("[And for my final act...]", 500, 100, 500, 10)
+            bossQuip("And for my final act...", 500, 100, 500, 10)
+            this.talkTime = quipTimeCalc("And for my final act...", 500, 100, 500, 10)
 
-            bossQuip("[I will be defying death...]", this.talkTime + 250, 100, 500, 10)
-            this.talkTime = quipTimeCalc("[I will be defying death...]", this.talkTime + 250, 100, 500, 10)
+            bossQuip("I will be defying death...", this.talkTime + 250, 100, 500, 10)
+            this.talkTime = quipTimeCalc("I will be defying death...", this.talkTime + 250, 100, 500, 10)
 
-            bossQuip("[Against the Traveler!]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Against the Traveler!]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("Against the Traveler!", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Against the Traveler!", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Time to put on a show!]", this.talkTime + 250, 75, 500, 10)
-            this.talkTime = quipTimeCalc("[Time to put on a show!]", this.talkTime + 250, 75, 500, 10)
+            bossQuip("Time to put on a show!", this.talkTime + 250, 75, 500, 10)
+            this.talkTime = quipTimeCalc("Time to put on a show!", this.talkTime + 250, 75, 500, 10)
 
             setTimeout((e) => {
                 this.halt = false
@@ -307,8 +310,8 @@ class Beyblade {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("[LET IT RIP!]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[LET IT RIP!]", 500, 50, 500, 10)
+            bossQuip("LET IT RIP!", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("LET IT RIP!", 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -320,17 +323,17 @@ class Beyblade {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("[Yeah! I'm on a winning streak right now!]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Yeah! I'm on a winning streak right now!]", 500, 50, 500, 10)
+            bossQuip("Yeah! I'm on a winning streak right now!", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Yeah! I'm on a winning streak right now!", 500, 50, 500, 10)
 
-            bossQuip("[You wanna go up next, Traveler?]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[You wanna go up next, Traveler?]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("You wanna go up next, Traveler?", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("You wanna go up next, Traveler?", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Let's see if you can hang with the big dogs.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Let's see if you can hang with the big dogs.]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("Let's see if you can hang with the big dogs.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Let's see if you can hang with the big dogs.", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[LET IT RIP!]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[LET IT RIP!]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("LET IT RIP!", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("LET IT RIP!", this.talkTime + 250, 50, 500, 10)
 
             setTimeout((e) => {
                 this.halt = false
@@ -389,8 +392,8 @@ class Rainman {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("[Leave my home.]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Leave my home.]", 500, 50, 500, 10)
+            bossQuip("Leave my home.", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Leave my home.", 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -402,14 +405,14 @@ class Rainman {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("[I have shown you no aggression, Traveler.]", 500, 60, 500, 10)
-            this.talkTime = quipTimeCalc("[I have shown you no aggression, Traveler.]", 500, 60, 500, 10)
+            bossQuip("I have shown you no aggression, Traveler.", 500, 60, 500, 10)
+            this.talkTime = quipTimeCalc("I have shown you no aggression, Traveler.", 500, 60, 500, 10)
 
-            bossQuip("[And still, you bring brutality and terror to my home.]", this.talkTime + 250, 60, 500, 10)
-            this.talkTime = quipTimeCalc("[And still, you bring brutality and terror to my home.]", this.talkTime + 250, 60, 500, 10)
+            bossQuip("And still, you bring brutality and terror to my home.", this.talkTime + 250, 60, 500, 10)
+            this.talkTime = quipTimeCalc("And still, you bring brutality and terror to my home.", this.talkTime + 250, 60, 500, 10)
 
-			bossQuip("[And for this, I will not stand.]", this.talkTime + 250, 60, 500, 10)
-            this.talkTime = quipTimeCalc("[And for this, I will not stand.]", this.talkTime + 250, 60, 500, 10)
+			bossQuip("And for this, I will not stand.", this.talkTime + 250, 60, 500, 10)
+            this.talkTime = quipTimeCalc("And for this, I will not stand.", this.talkTime + 250, 60, 500, 10)
 
             setTimeout((e) => {
                 this.halt = false
@@ -503,8 +506,8 @@ class Tsunami {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("[I will fight with all my strength.]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[I will fight with all my strength.]", 500, 50, 500, 10)
+            bossQuip("I will fight with all my strength.", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("I will fight with all my strength.", 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -516,17 +519,17 @@ class Tsunami {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("[Traveler...]", 500, 100, 500, 10)
-            this.talkTime = quipTimeCalc("[Traveler...]", 500, 100, 500, 10)
+            bossQuip("Traveler...", 500, 100, 500, 10)
+            this.talkTime = quipTimeCalc("Traveler...", 500, 100, 500, 10)
 
-            bossQuip("[What a bitter name...]", this.talkTime + 250, 75, 500, 10)
-            this.talkTime = quipTimeCalc("[What a bitter name...]", this.talkTime + 250, 75, 500, 10)
+            bossQuip("What a bitter name...", this.talkTime + 250, 75, 500, 10)
+            this.talkTime = quipTimeCalc("What a bitter name...", this.talkTime + 250, 75, 500, 10)
 
-			bossQuip("[Even if I am no longer king...]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Even if I am no longer king...]", this.talkTime + 250, 50, 500, 10)
+			bossQuip("Even if I am no longer king...", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Even if I am no longer king...", this.talkTime + 250, 50, 500, 10)
 
-			bossQuip("[I will stop you with all my strength.]", this.talkTime + 250, 50, 700, 10)
-            this.talkTime = quipTimeCalc("[I will stop you with all my strength.]", this.talkTime + 250, 50, 700, 10)
+			bossQuip("I will stop you with all my strength.", this.talkTime + 250, 50, 700, 10)
+            this.talkTime = quipTimeCalc("I will stop you with all my strength.", this.talkTime + 250, 50, 700, 10)
 
             setTimeout((e) => {
                 this.halt = false
@@ -591,8 +594,8 @@ class Starfish {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("[Fixin' for a standoff, Traveler?]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Fixin' for a standoff, Traveler?]", 500, 50, 500, 10)
+            bossQuip("Fixin' for a standoff, Traveler?", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Fixin' for a standoff, Traveler?", 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -604,20 +607,20 @@ class Starfish {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("[Stop your steppin' scoundrel.]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Stop your steppin' scoundrel.]", 500, 50, 500, 10)
+            bossQuip("Stop your steppin' scoundrel.", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Stop your steppin' scoundrel.", 500, 50, 500, 10)
 
-            bossQuip("[Makin' a name for yourself eh?]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Makin' a name for yourself eh?]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("Makin' a name for yourself eh?", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Makin' a name for yourself eh?", this.talkTime + 250, 50, 500, 10)
 
-			bossQuip("[And I reckon I'm your next target.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[And I reckon I'm your next target.]", this.talkTime + 250, 50, 500, 10)
+			bossQuip("And I reckon I'm your next target.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("And I reckon I'm your next target.", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Well then...]", this.talkTime + 250, 150, 500, 10)
-            this.talkTime = quipTimeCalc("[Well then...]", this.talkTime + 250, 150, 500, 10)
+            bossQuip("Well then...", this.talkTime + 250, 150, 500, 10)
+            this.talkTime = quipTimeCalc("Well then...", this.talkTime + 250, 150, 500, 10)
 
             bossQuip("[DRAW!]", this.talkTime + 250, 25, 500, 10)
-            this.talkTime = quipTimeCalc("[DRAW!]", this.talkTime + 250, 25, 500, 10)
+            this.talkTime = quipTimeCalc("DRAW!", this.talkTime + 250, 25, 500, 10)
 
             setTimeout((e) => {
                 this.halt = false
@@ -770,8 +773,8 @@ class Harbinger {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("[Why do you return?]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Why do you return?]", 500, 50, 500, 10)
+            bossQuip("Why do you return?", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Why do you return?", 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -783,26 +786,26 @@ class Harbinger {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("[Human spirit...]", 2000, 150, 500, 10)
-            this.talkTime = quipTimeCalc("[Human spirit...]", 2000, 150, 500, 25)
+            bossQuip("Human spirit...", 2000, 150, 500, 10)
+            this.talkTime = quipTimeCalc("Human spirit...", 2000, 150, 500, 25)
 
-            bossQuip("[I know who you are...]", this.talkTime + 250, 80, 500, 25)
-            this.talkTime = quipTimeCalc("[I know who you are...]", this.talkTime + 250, 80, 500, 25)
+            bossQuip("I know who you are...", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("I know who you are...", this.talkTime + 250, 80, 500, 25)
 
-			bossQuip("[I know what you are...]", this.talkTime + 250, 80, 500, 25)
-            this.talkTime = quipTimeCalc("[I know what you are...]", this.talkTime + 250, 80, 500, 25)
+			bossQuip("I know what you are...", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("I know what you are...", this.talkTime + 250, 80, 500, 25)
 
-            bossQuip("[No more than a pawn...]", this.talkTime + 250, 80, 500, 25)
-            this.talkTime = quipTimeCalc("[No more than a pawn...]", this.talkTime + 250, 80, 500, 25)
+            bossQuip("No more than a pawn...", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("No more than a pawn...", this.talkTime + 250, 80, 500, 25)
 
-			bossQuip("[Who doesn't know their role in this.]", this.talkTime + 250, 80, 500, 25)
-            this.talkTime = quipTimeCalc("[Who doesn't know their role in this.]", this.talkTime + 250, 80, 500, 25)
+			bossQuip("Who doesn't know their role in this.", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("Who doesn't know their role in this.", this.talkTime + 250, 80, 500, 25)
 
-			bossQuip("[I warn you...]", this.talkTime + 250, 100, 500, 25)
-            this.talkTime = quipTimeCalc("[I warn you...]", this.talkTime + 250, 100, 500, 25)
+			bossQuip("I warn you...", this.talkTime + 250, 100, 500, 25)
+            this.talkTime = quipTimeCalc("I warn you...", this.talkTime + 250, 100, 500, 25)
 
-			bossQuip("[You will bring about your own destruction.]", this.talkTime + 250, 80, 500, 25)
-            this.talkTime = quipTimeCalc("[You will bring about your own destruction.]", this.talkTime + 250, 80, 500, 25)
+			bossQuip("You will bring about your own destruction.", this.talkTime + 250, 80, 500, 25)
+            this.talkTime = quipTimeCalc("You will bring about your own destruction.", this.talkTime + 250, 80, 500, 25)
 
             setTimeout((e) => {
                 this.halt = false
@@ -855,44 +858,44 @@ class Tutorial {
             this.halt = true
             player.moveDisable = true
 
-            bossQuip("[Hello, Human Spirit.]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Hello, Human Spirit.]", 500, 50, 500, 10)
+            bossQuip("Hello, Human Spirit.", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Hello, Human Spirit.", 500, 50, 500, 10)
 
-            bossQuip("[My name is #####, and I have chosen you as my warrior.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[My name is #####, and I have chosen you as my warrior.]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("My name is #####, and I have chosen you as my warrior.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("My name is #####, and I have chosen you as my warrior.", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Many evil beings have taken over this land.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Many evil beings have taken over this land.]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("Many evil beings have taken over this land.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Many evil beings have taken over this land.", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[Now I need you too seek them out and destroy them.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Now I need you too seek them out and destroy them.]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("Now I need you too seek them out and destroy them.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Now I need you too seek them out and destroy them.", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("[You are the only hope left.]", this.talkTime + 250, 100, 500, 10)
-            this.talkTime = quipTimeCalc("[You are the only hope left.]", this.talkTime + 250, 100, 500, 10)
+            bossQuip("You are the only hope left.", this.talkTime + 250, 100, 500, 10)
+            this.talkTime = quipTimeCalc("You are the only hope left.", this.talkTime + 250, 100, 500, 10)
 
             setTimeout((e) => {
                 player.moveDisable = false
             }, this.talkTime)
-            bossQuip("[Use 'WASD' or 'ARROW KEYS' to move.]", this.talkTime + 250, 50, 1000, 10)
-            this.talkTime = quipTimeCalc("[Use 'WASD' or 'ARROW KEYS' to move.]", this.talkTime + 250, 50, 1000, 10)
+            bossQuip("Use 'WASD' or 'ARROW KEYS' to move.", this.talkTime + 250, 50, 1000, 10)
+            this.talkTime = quipTimeCalc("Use 'WASD' or 'ARROW KEYS' to move.", this.talkTime + 250, 50, 1000, 10)
 
-            bossQuip("[I have also given you some of my power.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[I have also given you some of my power.]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("I have also given you some of my power.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("I have also given you some of my power.", this.talkTime + 250, 50, 500, 10)
 
             setTimeout((e) => {
                 player.dashDisable = false
             }, this.talkTime)
-            bossQuip("[Use 'SPACE' or 'SHIFT' to dash through projectiles.]", this.talkTime + 250, 50, 1000, 10)
-            this.talkTime = quipTimeCalc("[Use 'SPACE' or 'SHIFT' to dash through projectiles.]", this.talkTime + 250, 50, 1000, 10)
+            bossQuip("Use 'SPACE' or 'SHIFT' to dash through projectiles.", this.talkTime + 250, 50, 1000, 10)
+            this.talkTime = quipTimeCalc("Use 'SPACE' or 'SHIFT' to dash through projectiles.", this.talkTime + 250, 50, 1000, 10)
             
             setTimeout((e) => {
                 spawnDiamond()
             }, this.talkTime)
-            bossQuip("[Now collect these diamond and begin your conquest.]", this.talkTime + 250, 50, 1000, 10)
-            this.talkTime = quipTimeCalc("[Now collect these diamonds and begin your conquest.]", this.talkTime + 250, 50, 1000, 10)
+            bossQuip("Now collect these diamond and begin your conquest.", this.talkTime + 250, 50, 1000, 10)
+            this.talkTime = quipTimeCalc("Now collect these diamonds and begin your conquest.", this.talkTime + 250, 50, 1000, 10)
 
-            bossQuip("[I will be watching...]", this.talkTime + 2500, 100, 500, 10)
-            this.talkTime = quipTimeCalc("[I will be watching...]", this.talkTime + 2500, 100, 500, 10)
+            bossQuip("I will be watching...", this.talkTime + 2500, 100, 500, 10)
+            this.talkTime = quipTimeCalc("I will be watching...", this.talkTime + 2500, 100, 500, 10)
         
     }
 }
@@ -968,8 +971,8 @@ class Monk {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("[Join the light, Traveler.]", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Join the light, Traveler.]", 500, 50, 500, 10)
+            bossQuip("Join the light, Traveler.", 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Join the light, Traveler.", 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -981,17 +984,17 @@ class Monk {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("[Hello, Traveler.]", 500, 75, 500, 10)
-            this.talkTime = quipTimeCalc("[Hello, Traveler.]", 500, 75, 500, 10)
+            bossQuip("Hello, Traveler.", 500, 75, 500, 10)
+            this.talkTime = quipTimeCalc("Hello, Traveler.", 500, 75, 500, 10)
 
-            bossQuip("[You have made quite the mess.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[You have made quite the mess.]", this.talkTime + 250, 50, 500, 10)
+            bossQuip("You have made quite the mess.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("You have made quite the mess.", this.talkTime + 250, 50, 500, 10)
 
-			bossQuip("[But I still see good in you.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[But I still see good in you.]", this.talkTime + 250, 50, 500, 10)
+			bossQuip("But I still see good in you.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("But I still see good in you.", this.talkTime + 250, 50, 500, 10)
 
-			bossQuip("[Cast aside this dark path you walk, and join the light.]", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("[Cast aside this dark path you walk, and join the light.]", this.talkTime + 250, 50, 500, 10)
+			bossQuip("Cast aside this dark path you walk, and join the light.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("Cast aside this dark path you walk, and join the light.", this.talkTime + 250, 50, 500, 10)
 
             setTimeout((e) => {
                 this.halt = false
@@ -1136,6 +1139,7 @@ function start() { // IMPORTANT
     projectiles.splice(0, projectiles.length)
     menu.classList.add("hide")
     diamonds.splice(0, diamonds.length)
+    bossQuipText = ""
     currentBoss.intro()
 }
 
@@ -1268,12 +1272,12 @@ function draw() {
         ctx.fillRect(currentBoss.x + globalOffsetX, currentBoss.y + globalOffsetY, currentBoss.size, currentBoss.size)
 
         // Quips
-        if (bossQuipText != undefined) {
+        if (bossQuipText != "") {
 			ctx.shadowBlur = 0
             ctx.font = "15px monospace";       // size + font
             ctx.fillStyle = "#999";       // color
             ctx.textAlign = "center";
-            ctx.fillText(bossQuipText, currentBoss.x + currentBoss.size / 2 + globalOffsetX, currentBoss.y - 10 + globalOffsetY); // text, x, y
+            ctx.fillText("[" + bossQuipText + "]", currentBoss.x + currentBoss.size / 2 + globalOffsetX, currentBoss.y - 10 + globalOffsetY); // text, x, y
         }
 
         // Boss Health Bar
