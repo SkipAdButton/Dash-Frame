@@ -24,6 +24,16 @@ class Player {
         this.holdLeft = false
         this.holdRight = false
     }
+	death() {
+		shake(7, 30)
+        playerDeathSound.play()
+		currentBoss.quip("playerDeath")
+        end()
+        for (let i = 0; i < 10; i++) {
+            particles.push(new Particle(this.x + 5, this.y + 5, (Math.random() * Math.PI * 2), 200, .3, 10, "#007BBB"))
+        }
+		console.log("I ran")
+	}
 }
 // Versatile
 class Projectile {
@@ -112,10 +122,6 @@ class Charger {
 
         this.phasePoint = 6
         this.halt = false
-
-        this.phaseQuip = "[Test]"
-        this.playerDeathQuip = "[More Test]"
-
         
     }
     move(delta) {
@@ -179,6 +185,15 @@ class Charger {
             }, this.talkTime)
         }
     }
+	quip(type) {
+		if (bossQuipText == "") {
+			if (type == "phase") {
+				bossQuip("You shall not pass!", 100, 50, 500, 10)
+			} else if (type == "playerDeath") {
+				bossQuip("No intruder shall enter.", 100, 50, 500, 10)
+			}
+		}
+	}
 }
 class Ringmaster {
     constructor(maxHealth, speed, fireRate) {
@@ -261,6 +276,15 @@ class Ringmaster {
             }, this.talkTime)
         }
     }
+	quip(type) {
+		if (bossQuipText == "") {
+			if (type == "phase") {
+				bossQuip("Listen to the crowd!", 100, 50, 500, 10)
+			} else if (type == "playerDeath") {
+				bossQuip("What a preformance!", 100, 50, 500, 10)
+			}
+		}
+	}
 }
 class Beyblade {
     constructor(maxHealth, speed, fireRate) {
@@ -344,6 +368,15 @@ class Beyblade {
             }, this.talkTime)
         }
     }
+	quip(type) {
+		if (bossQuipText == "") {
+			if (type == "phase") {
+				bossQuip("I can't stop... I can't stop...", 100, 50, 500, 10)
+			} else if (type == "playerDeath") {
+				bossQuip("Who's next?", 100, 50, 500, 10)
+			}
+		}
+	}
 }
 class Rainman {
     constructor(maxHealth, speed, fireRate) {
@@ -423,6 +456,15 @@ class Rainman {
             }, this.talkTime)
         }
     }
+	quip(type) {
+		if (bossQuipText == "") {
+			if (type == "phase") {
+				bossQuip("All I ask is peace.", 100, 50, 500, 10)
+			} else if (type == "playerDeath") {
+				bossQuip("Wash away...", 100, 50, 500, 10)
+			}
+		}
+	}
 }
 
 class Tsunami {
@@ -540,6 +582,15 @@ class Tsunami {
             }, this.talkTime)
         }
     }
+	quip(type) {
+		if (bossQuipText == "") {
+			if (type == "phase") {
+				bossQuip("By the power of the sea!", 100, 50, 500, 10)
+			} else if (type == "playerDeath") {
+				bossQuip("I will restore my honor.", 100, 50, 500, 10)
+			}
+		}
+	}
 }
 class Starfish {
     constructor(maxHealth, speed, fireRate) {
@@ -619,7 +670,7 @@ class Starfish {
             bossQuip("Well then...", this.talkTime + 250, 150, 500, 10)
             this.talkTime = quipTimeCalc("Well then...", this.talkTime + 250, 150, 500, 10)
 
-            bossQuip("[DRAW!]", this.talkTime + 250, 25, 500, 10)
+            bossQuip("DRAW!", this.talkTime + 250, 25, 500, 10)
             this.talkTime = quipTimeCalc("DRAW!", this.talkTime + 250, 25, 500, 10)
 
             setTimeout((e) => {
@@ -631,6 +682,15 @@ class Starfish {
             }, this.talkTime)
         }
     }
+	quip(type) {
+		if (bossQuipText == "") {
+			if (type == "phase") {
+				bossQuip("It's high noon...", 500, 50, 500, 10)
+			} else if (type == "playerDeath") {
+				bossQuip("Time to collect my bounty", 500, 50, 500, 10)
+			}
+		}
+	}
 }
 class Harbinger {
     constructor(maxHealth, speed, fireRate, fireRate2, fireRate3, fireRate4, fireRate5) {
@@ -816,6 +876,19 @@ class Harbinger {
             }, this.talkTime)
         }
     }
+	quip(type) {
+		if (bossQuipText == "") {
+			if (type == "phase" && this.phase == 1) {
+				bossQuip("You utter fool...", 2750, 100, 500, 10)
+			} else if (type == "playerDeath" && this.phase == 1) {
+				bossQuip("This is mercy.", 100, 50, 500, 10)
+			} else if (type == "phase" && this.phase == 2) {
+				bossQuip("", 100, 100, 500, 10)
+			} else if (type == "playerDeath" && this.phase == 2) {
+				bossQuip("Wretched Being.", 100, 50, 500, 10)
+			}
+		}
+	}
 }
 class Tutorial {
     constructor(maxHealth, speed, fireRate) {
@@ -830,7 +903,7 @@ class Tutorial {
         this.y = canvas.height/2 - this.size/2
         this.color = "#005AAA"
 
-        this.phasePoint = 6
+        this.phasePoint = -1
         this.quipping = false
     }
     move(delta) {
@@ -861,8 +934,8 @@ class Tutorial {
             bossQuip("Hello, Human Spirit.", 500, 50, 500, 10)
             this.talkTime = quipTimeCalc("Hello, Human Spirit.", 500, 50, 500, 10)
 
-            bossQuip("My name is #####, and I have chosen you as my warrior.", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("My name is #####, and I have chosen you as my warrior.", this.talkTime + 250, 50, 500, 10)
+            bossQuip("I have chosen you as my warrior, you may call me Mentor.", this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc("I have chosen you as my warrior, you may call me Mentor.", this.talkTime + 250, 50, 500, 10)
 
             bossQuip("Many evil beings have taken over this land.", this.talkTime + 250, 50, 500, 10)
             this.talkTime = quipTimeCalc("Many evil beings have taken over this land.", this.talkTime + 250, 50, 500, 10)
@@ -870,8 +943,8 @@ class Tutorial {
             bossQuip("Now I need you too seek them out and destroy them.", this.talkTime + 250, 50, 500, 10)
             this.talkTime = quipTimeCalc("Now I need you too seek them out and destroy them.", this.talkTime + 250, 50, 500, 10)
 
-            bossQuip("You are the only hope left.", this.talkTime + 250, 100, 500, 10)
-            this.talkTime = quipTimeCalc("You are the only hope left.", this.talkTime + 250, 100, 500, 10)
+            bossQuip("You are the only hope left.", this.talkTime + 250, 100, 750, 10)
+            this.talkTime = quipTimeCalc("You are the only hope left.", this.talkTime + 250, 100, 750, 10)
 
             setTimeout((e) => {
                 player.moveDisable = false
@@ -898,6 +971,15 @@ class Tutorial {
             this.talkTime = quipTimeCalc("I will be watching...", this.talkTime + 2500, 100, 500, 10)
         
     }
+	quip(type) {
+		if (bossQuipText == "") {
+			if (type == "phase") {
+				bossQuip("You shouldn't be able to see this.", 100, 50, 500, 10)
+			} else if (type == "playerDeath") {
+				bossQuip("You're joking.", 100, 50, 500, 10)
+			}
+		}
+	}
 }
 class Monk {
     constructor(maxHealth, speed, fireRate, fireRate2) {
@@ -1005,6 +1087,15 @@ class Monk {
             }, this.talkTime)
         }
     }
+	quip(type) {
+		if (bossQuipText == "") {
+			if (type == "phase") {
+				bossQuip("See the truth.", 500, 50, 500, 10)
+			} else if (type == "playerDeath") {
+				bossQuip("Poor soul.", 500, 50, 500, 10)
+			}
+		}
+	}
 }
 
 // projectiles.push(new Projectile(this.x + (this.size / 2), this.y + (this.size / 2), Math.atan2(player.y + 10 - this.y - (this.size / 2), player.x + 10 - this.x - (this.size / 2)), 600, 10))
@@ -1068,9 +1159,9 @@ document.addEventListener("keydown", (e) => {
     keys[e.key.toLowerCase()] = true;
     
     // Menu Navigations
-    if (e.key.toLowerCase() == "enter" && currentBoss == undefined) start()
-    if (e.key.toLowerCase() == "arrowright" && currentBoss == undefined) cycleBoss(1)
-    if (e.key.toLowerCase() == "arrowleft" && currentBoss == undefined) cycleBoss(-1)
+    if (e.key.toLowerCase() == "enter" && currentBoss == undefined && !menu.classList.contains("hide")) start()
+    if (e.key.toLowerCase() == "arrowright" && currentBoss == undefined && !menu.classList.contains("hide")) cycleBoss(1)
+    if (e.key.toLowerCase() == "arrowleft" && currentBoss == undefined && !menu.classList.contains("hide")) cycleBoss(-1)
 
     // Volume Control
     if (e.key.toLowerCase() == "v") {
@@ -1159,9 +1250,9 @@ function end() {
             menu.classList.remove("hide")
             for (let i = 0; i < 300; i++) {
             clearTimeout(i)
-        }
+        	}
             currentBoss = undefined
-        }, 1500)
+        }, 1750)
     }
 }
 
@@ -1364,12 +1455,7 @@ function bossCol() {
     if (player.x + 10 > currentBoss.x && player.x + 10 < currentBoss.x + currentBoss.size + 10 && player.y + 10 > currentBoss.y - 10 && player.y + 10 < currentBoss.y + currentBoss.size && player.dashing == false) {
         player.health--
         if (player.health == 0) {
-            shake(7, 30)
-            playerDeathSound.play()
-            end()
-            for (let i = 0; i < 10; i++) {
-                particles.push(new Particle(player.x + 5, player.y + 5, (Math.random() * Math.PI * 2), 200, .3, 10, "#007BBB"))
-            }
+            player.death()
         }
     }
 }
@@ -1412,12 +1498,7 @@ function projectileCol() {
         if (player.x + 10 > projectiles[i].x - projectiles[i].size && player.x + 10 < projectiles[i].x + projectiles[i].size && player.y + 10 > projectiles[i].y - projectiles[i].size && player.y + 10 < projectiles[i].y + projectiles[i].size && player.dashing == false) {
             player.health--
             if (player.health == 0) {
-                shake(7, 30)
-                playerDeathSound.play()
-                end()
-                for (let i = 0; i < 10; i++) {
-                    particles.push(new Particle(player.x + 5, player.y + 5, (Math.random() * Math.PI * 2), 200, .3, 10, "#007BBB"))
-                }
+                player.death()
             }
             projectiles.splice(i, 1)
         }
@@ -1449,7 +1530,8 @@ function pickupDiamond() {
                 if (currentBoss.health > 1) {
                     spawnDiamond()
                 }
-                if (currentBoss.health == currentBoss.phasePoint + 1 || currentBoss.health == currentBoss.phasePoint + 1 && currentBoss.phase == 1) {
+                if (currentBoss.health == currentBoss.phasePoint + 1 || (currentBoss.health == currentBoss.phasePoint + 1 && currentBoss.phase == 1)) {
+					currentBoss.quip("phase")
                 }
                 for (let i = 0; i < diamonds.length; i++) {
                     for (let k = 0; k < 6; k++) {
