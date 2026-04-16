@@ -587,7 +587,7 @@ class Tsunami {
 			if (type == "phase") {
 				bossQuip("By the power of the sea!", 100, 50, 500, 10)
 			} else if (type == "playerDeath") {
-				bossQuip("I will restore my honor.", 100, 50, 500, 10)
+				bossQuip("You have no place here.", 100, 50, 500, 10)
 			}
 		}
 	}
