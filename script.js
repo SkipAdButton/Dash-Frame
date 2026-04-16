@@ -74,14 +74,14 @@ class Diamond {
                     if (currentBoss.health == 0) {
                         if (selectedBoss == 9 && currentBoss.phase == 1) {
                             for (let i = 0; i < 120; i++) {
-                                setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
+                                betterTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
                             }
                             bossDeathSound.play()
                             shake(30, 150)
                             currentBoss.phaseSwitch()
                         } else {
                             for (let i = 0; i < 120; i++) {
-                                setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
+                                betterTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 700, .4, 20, currentBoss.color)) }, 10 + (10 * i))
                             }
                             bossDeathSound.play()
                             shake(30, 150)
@@ -176,7 +176,7 @@ class Charger {
             bossQuip("Best you turn around, before someone gets hurt.", this.talkTime + 250, 75, 500, 10)
             this.talkTime = quipTimeCalc("Best you turn around, before someone gets hurt.", this.talkTime + 250, 75, 500, 10)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 this.halt = false
                 player.moveDisable = false
                 player.dashDisable = false
@@ -267,7 +267,7 @@ class Ringmaster {
             bossQuip("Time to put on a show!", this.talkTime + 250, 75, 500, 10)
             this.talkTime = quipTimeCalc("Time to put on a show!", this.talkTime + 250, 75, 500, 10)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 this.halt = false
                 player.moveDisable = false
                 player.dashDisable = false
@@ -359,7 +359,7 @@ class Beyblade {
             bossQuip("LET IT RIP!", this.talkTime + 250, 50, 500, 10)
             this.talkTime = quipTimeCalc("LET IT RIP!", this.talkTime + 250, 50, 500, 10)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 this.halt = false
                 player.moveDisable = false
                 player.dashDisable = false
@@ -447,7 +447,7 @@ class Rainman {
 			bossQuip("And for this, I will not stand.", this.talkTime + 250, 60, 500, 10)
             this.talkTime = quipTimeCalc("And for this, I will not stand.", this.talkTime + 250, 60, 500, 10)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 this.halt = false
                 player.moveDisable = false
                 player.dashDisable = false
@@ -573,7 +573,7 @@ class Tsunami {
 			bossQuip("I will stop you with all my strength.", this.talkTime + 250, 50, 700, 10)
             this.talkTime = quipTimeCalc("I will stop you with all my strength.", this.talkTime + 250, 50, 700, 10)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 this.halt = false
                 player.moveDisable = false
                 player.dashDisable = false
@@ -673,7 +673,7 @@ class Starfish {
             bossQuip("DRAW!", this.talkTime + 250, 25, 500, 10)
             this.talkTime = quipTimeCalc("DRAW!", this.talkTime + 250, 25, 500, 10)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 this.halt = false
                 player.moveDisable = false
                 player.dashDisable = false
@@ -812,14 +812,14 @@ class Harbinger {
     }
     phaseSwitch() {
         projectiles.splice(0, projectiles.length)
-        setTimeout(e => {
+        betterTimeout(e => {
             this.phase++
             for (let i = 0; i < 250; i++) {
-                setTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 800, .6, 20, currentBoss.color)) }, 10 + (10 * i))
+                betterTimeout((e) => { particles.push(new Particle(currentBoss.x + currentBoss.size / 2, currentBoss.y + currentBoss.size / 2, (Math.random() * Math.PI * 2), 800, .6, 20, currentBoss.color)) }, 10 + (10 * i))
             }
             bossPhaseSound.play()
             shake(80, 250)
-            setTimeout(e => {
+            betterTimeout(e => {
                 this.health = this.maxHealth
                 diamonds.push(new Diamond())
             }, 3000)
@@ -867,7 +867,7 @@ class Harbinger {
 			bossQuip("You will bring about your own destruction.", this.talkTime + 250, 80, 500, 25)
             this.talkTime = quipTimeCalc("You will bring about your own destruction.", this.talkTime + 250, 80, 500, 25)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 this.halt = false
                 player.moveDisable = false
                 player.dashDisable = false
@@ -946,7 +946,7 @@ class Tutorial {
             bossQuip("You are the only hope left.", this.talkTime + 250, 100, 750, 10)
             this.talkTime = quipTimeCalc("You are the only hope left.", this.talkTime + 250, 100, 750, 10)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 player.moveDisable = false
             }, this.talkTime)
             bossQuip("Use 'WASD' or 'ARROW KEYS' to move.", this.talkTime + 250, 50, 1000, 10)
@@ -955,13 +955,13 @@ class Tutorial {
             bossQuip("I have also given you some of my power.", this.talkTime + 250, 50, 500, 10)
             this.talkTime = quipTimeCalc("I have also given you some of my power.", this.talkTime + 250, 50, 500, 10)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 player.dashDisable = false
             }, this.talkTime)
             bossQuip("Use 'SPACE' or 'SHIFT' to dash through projectiles.", this.talkTime + 250, 50, 1000, 10)
             this.talkTime = quipTimeCalc("Use 'SPACE' or 'SHIFT' to dash through projectiles.", this.talkTime + 250, 50, 1000, 10)
             
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 spawnDiamond()
             }, this.talkTime)
             bossQuip("Now collect these diamond and begin your conquest.", this.talkTime + 250, 50, 1000, 10)
@@ -1078,7 +1078,7 @@ class Monk {
 			bossQuip("Cast aside this dark path you walk, and join the light.", this.talkTime + 250, 50, 500, 10)
             this.talkTime = quipTimeCalc("Cast aside this dark path you walk, and join the light.", this.talkTime + 250, 50, 500, 10)
 
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 this.halt = false
                 player.moveDisable = false
                 player.dashDisable = false
@@ -1119,6 +1119,7 @@ const player = new Player(0, 400)
 const projectiles = []
 const diamonds = []
 const particles = []
+const timeoutHolder = []
 const bossInfo = [{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},{attempts: 0, visited: false},]
 
 const enableSound = new Audio("audio/enableSound.mp3")
@@ -1239,18 +1240,14 @@ function end() {
         projectiles.splice(0, projectiles.length)
         diamonds.splice(0, diamonds.length)
         menu.classList.remove("hide")
-        for (let i = 0; i < 300; i++) {
-            clearTimeout(i)
-        }
+        clearTimeouts()
         currentBoss = undefined
     } else {
-        setTimeout((e) => {
+        betterTimeout((e) => {
             projectiles.splice(0, projectiles.length)
             diamonds.splice(0, diamonds.length)
             menu.classList.remove("hide")
-            for (let i = 0; i < 300; i++) {
-            clearTimeout(i)
-        	}
+            clearTimeouts()
             currentBoss = undefined
         }, 1750)
     }
@@ -1433,7 +1430,7 @@ function dash(delta) {
         if (player.dashFrame < .1) {
             player.x += player.dashDirX * delta
             player.y += player.dashDirY * delta
-            /* setTimeout((e) => { */
+            /* betterTimeout((e) => { */
             particles.push(new Particle(player.x + 5, player.y + 5, (Math.random() * Math.PI * 2), 100, .2, 10, "#007BBB"))
             /* }, 50 + (50 * i)) */
             player.dashFrame += delta
@@ -1443,7 +1440,7 @@ function dash(delta) {
             player.dashDirY = 0
             player.dashFrame = 0
             player.dashCoolDown = .5
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 playerPulse = 1
             }, 500)
         }
@@ -1466,15 +1463,15 @@ function spawnBoss(type) {
 
 // Quips
 function bossQuip(quip, wait, quipTypeSpeed, quipIdleTime, quipFoldSpeed) {
-    setTimeout((e) => {
+    betterTimeout((e) => {
         for (let i = 0; i < quip.length; i++) {
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 bossQuipText += quip[i]
             }, quipTypeSpeed * i)
         }
-        setTimeout((e) => {
+        betterTimeout((e) => {
             for (let i = 0; i <= quip.length; i++) {
-            setTimeout((e) => {
+            betterTimeout((e) => {
                 bossQuipText = quip.slice(0, quip.length - i)
             }, quipFoldSpeed * i)
         }
@@ -1558,13 +1555,13 @@ function updateParticles(delta) {
 // Screen Shakes
 function shake(intensity, length) {
     for (let i = 0; i < length; i++) {
-        setTimeout((e) => {
+        betterTimeout((e) => {
             globalOffsetX = 0;
             globalOffsetY = 0;
             globalOffsetX = Math.random() * intensity;
             globalOffsetY = Math.random() * intensity;
         }, 10 + (10 * i))
-        setTimeout((e) => {
+        betterTimeout((e) => {
             globalOffsetX = 0;
             globalOffsetY = 0;
         }, 20 + (10 * length))
@@ -1615,6 +1612,20 @@ function musicFade(delta, boss, song) {
     }
 }
 
+// Timeout system
+
+function betterTimeout(fn, delay) {
+	let timeoutId = setTimeout(fn, delay)
+	timeoutHolder.push(timeoutId)
+}
+
+function clearTimeouts() {
+	for (let i of timeoutHolder) {
+		clearTimeout(i)
+	}
+	timeoutHolder.splice(0, timeoutHolder.length)
+}
+
 // Delta time / Loop functions
 function loop(time) {
 
@@ -1630,7 +1641,7 @@ function loop(time) {
     musicControl(delta)
     pickupDiamond()
     projectileCol()
-    if (keys["escape"]) {
+    if (keys["escape"] && currentBoss != undefined) {
         end()
     }
     if (currentBoss != undefined) {
