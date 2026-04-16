@@ -1418,7 +1418,7 @@ function playerMovement(delta) {
 }
 
 function dash(delta) {
-    if ((keys[" "] ||keys["shift"]) && player.dashDirX == 0 && player.dashDirY == 0 && player.dashCoolDown <= 0 && player.health > 0 && currentBoss != undefined && !player.dashDisable) {
+    if ((keys[" "] ||keys["shift"]) && player.dashDirX == 0 && player.dashDirY == 0 && player.dashCoolDown <= 0 && player.health > 0 && currentBoss != undefined && !player.dashDisable && !player.moveDisable) {
         if (keys.w || keys.arrowup) player.dashDirY -= 1500
         if (keys.s || keys.arrowdown) player.dashDirY += 1500
         if (keys.a || keys.arrowleft) player.dashDirX -= 1500
