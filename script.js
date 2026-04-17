@@ -6,7 +6,13 @@ class Player {
         this.speed = speed
         this.x = canvas.width/4 - 10
         this.y = canvas.height/2 - 10
-        this.color = "#00BFFF"
+        this.color = "#00FF7D"
+		// "#00BFFF" Main
+		// "#007BBB" Particals
+		// "#669FB3" Dash
+		// "#00FF7D" Main
+		// "#00D96A" Partical
+		// "#4DDC96" Dash
 
         this.dashing = false
         this.dashCoolDown = 0
@@ -30,7 +36,7 @@ class Player {
 		currentBoss.quip("playerDeath")
         end()
         for (let i = 0; i < 10; i++) {
-            particles.push(new Particle(this.x + 5, this.y + 5, (Math.random() * Math.PI * 2), 200, .3, 10, "#007BBB"))
+            particles.push(new Particle(this.x + 5, this.y + 5, (Math.random() * Math.PI * 2), 200, .3, 10, "#00D96A"))
         }
 		console.log("I ran")
 	}
@@ -147,7 +153,7 @@ class Charger {
         }
     }
     intro() {   
-        if (bossInfo[selectedBoss].visited) {
+        if (bossInfo[selectedBoss].visited || skipintros.checked) {
             this.halt = false
             player.moveDisable = false
             player.dashDisable = false
@@ -235,7 +241,7 @@ class Ringmaster {
         }
     }
 	intro() {   
-        if (bossInfo[selectedBoss].visited) {
+        if (bossInfo[selectedBoss].visited || skipintros.checked) {
             this.halt = false
             player.moveDisable = false
             player.dashDisable = false
@@ -327,7 +333,7 @@ class Beyblade {
         }
     }
     intro() {   
-        if (bossInfo[selectedBoss].visited) {
+        if (bossInfo[selectedBoss].visited || skipintros.checked) {
             this.halt = false
             player.moveDisable = false
             player.dashDisable = false
@@ -418,7 +424,7 @@ class Rainman {
         }
     }
 	intro() {   
-        if (bossInfo[selectedBoss].visited) {
+        if (bossInfo[selectedBoss].visited || skipintros.checked) {
             this.halt = false
             player.moveDisable = false
             player.dashDisable = false
@@ -541,7 +547,7 @@ class Tsunami {
         }
     }
 	intro() {   
-        if (bossInfo[selectedBoss].visited) {
+        if (bossInfo[selectedBoss].visited || skipintros.checked) {
             this.halt = false
             player.moveDisable = false
             player.dashDisable = false
@@ -587,7 +593,7 @@ class Tsunami {
 			if (type == "phase") {
 				bossQuip("By the power of the sea!", 100, 50, 500, 10)
 			} else if (type == "playerDeath") {
-				bossQuip("I will restore my honor.", 100, 50, 500, 10)
+				bossQuip("You have no place here.", 100, 50, 500, 10)
 			}
 		}
 	}
@@ -638,7 +644,7 @@ class Starfish {
         }
     }
 	intro() {   
-        if (bossInfo[selectedBoss].visited) {
+        if (bossInfo[selectedBoss].visited || skipintros.checked) {
             this.halt = false
             player.moveDisable = false
             player.dashDisable = false
@@ -685,9 +691,9 @@ class Starfish {
 	quip(type) {
 		if (bossQuipText == "") {
 			if (type == "phase") {
-				bossQuip("It's high noon...", 500, 50, 500, 10)
+				bossQuip("It's high noon...", 100, 50, 500, 10)
 			} else if (type == "playerDeath") {
-				bossQuip("Time to collect my bounty", 500, 50, 500, 10)
+				bossQuip("Time to collect my bounty", 100, 50, 500, 10)
 			}
 		}
 	}
@@ -826,7 +832,7 @@ class Harbinger {
         }, 5000)
     }
 	intro() {   
-        if (bossInfo[selectedBoss].visited) {
+        if (bossInfo[selectedBoss].visited || skipintros.checked) {
             this.halt = false
             player.moveDisable = false
             player.dashDisable = false
@@ -1046,7 +1052,7 @@ class Monk {
         }
     }
 	intro() {   
-        if (bossInfo[selectedBoss].visited) {
+        if (bossInfo[selectedBoss].visited || skipintros.checked) {
             this.halt = false
             player.moveDisable = false
             player.dashDisable = false
@@ -1090,9 +1096,9 @@ class Monk {
 	quip(type) {
 		if (bossQuipText == "") {
 			if (type == "phase") {
-				bossQuip("See the truth.", 500, 50, 500, 10)
+				bossQuip("See the truth.", 100, 50, 500, 10)
 			} else if (type == "playerDeath") {
-				bossQuip("Poor soul.", 500, 50, 500, 10)
+				bossQuip("Poor soul.", 100, 50, 500, 10)
 			}
 		}
 	}
@@ -1109,6 +1115,7 @@ const startScreen = document.getElementById("startScreen")
 const htpScreen = document.getElementById("htpScreen")
 const menu = document.getElementById("menu")
 const htpMenu = document.getElementById("htpMenu")
+const settingsMenu = document.getElementById("settingsMenu")
 const attemptCounter = document.getElementById("attemptCounter")
 const htpq2 = document.getElementById("htpq2")
 const bossList = [
@@ -1129,6 +1136,10 @@ const diamondCollectSound = new Audio("audio/diamondCollectSound.mp3")
 const bossHurtSound = new Audio("audio/bossHurtSound.mp3")
 const bossDeathSound = new Audio("audio/bossDeathSound.mp3")
 const bossPhaseSound = new Audio("audio/bossPhaseSound.mp3")
+
+const musicVolume = document.getElementById("musicVolume")
+const effectVolume = document.getElementById("effectVolume")
+const skipintros = document.getElementById("skipIntros")
 
 const tutorialSong = new Audio("audio/orchestralAura.mp3")
 const chargerSong = new Audio("audio/headBangerLoop.mp3")
@@ -1151,8 +1162,6 @@ let globalOffsetY = 0;
 let bossPulse = 0
 let playerPulse = 0
 
-let musicVolume = 1
-
 let bossQuipText = ""
 
 // Event Listeners
@@ -1163,16 +1172,6 @@ document.addEventListener("keydown", (e) => {
     if (e.key.toLowerCase() == "enter" && currentBoss == undefined && !menu.classList.contains("hide")) start()
     if (e.key.toLowerCase() == "arrowright" && currentBoss == undefined && !menu.classList.contains("hide")) cycleBoss(1)
     if (e.key.toLowerCase() == "arrowleft" && currentBoss == undefined && !menu.classList.contains("hide")) cycleBoss(-1)
-
-    // Volume Control
-    if (e.key.toLowerCase() == "v") {
-        let userVolumeInput = parseInt(prompt("Set volume (0-100)"))
-        if (isNaN(userVolumeInput) || userVolumeInput < 0 || userVolumeInput > 100) {
-            alert("Please enter a number 0-100")
-        } else {
-            musicVolume = userVolumeInput/100
-        }
-    }
 });
 document.addEventListener("keyup", (e) => {
     keys[e.key.toLowerCase()] = false;
@@ -1253,14 +1252,20 @@ function end() {
     }
 }
 
-function switchScreen() {
-    if (menu.classList.contains("hide")) {
-        menu.classList.remove("hide")
+function switchScreen(screen) {
+	if (screen == "main") {
+		menu.classList.remove("hide")
         htpMenu.classList.add("hide")
-    } else {
-        menu.classList.add("hide")
+		settingsMenu.classList.add("hide")
+	} else if (screen == "how-to-play"){
+		menu.classList.add("hide")
         htpMenu.classList.remove("hide")
-    }
+		settingsMenu.classList.add("hide")
+	} else if (screen == "settings") {
+		menu.classList.add("hide")
+        htpMenu.classList.add("hide")
+		settingsMenu.classList.remove("hide")
+	}
 }
 
 function guide(tab) {
@@ -1311,14 +1316,21 @@ function draw() {
             ctx.fillStyle = player.color
             ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, player.size, player.size)
 
+			// Glasses
+			ctx.fillStyle = "#020"
+            ctx.fillRect(player.x + 2 - (keys["a"] * 2) + (keys["d"] * 2) + globalOffsetX, player.y + 5 - (keys["w"] * 2) + (keys["s"] * 2) + globalOffsetY, 6, 5)
+			ctx.fillRect(player.x + 12 - (keys["a"] * 2) + (keys["d"] * 2) + globalOffsetX, player.y + 5 - (keys["w"] * 2) + (keys["s"] * 2) + globalOffsetY, 6, 5)
+
+			 - (keys["a"] * 2) + (keys["d"] * 2)
+
             ctx.fillStyle = `rgba(255, 255, 255, ${playerPulse})`
             ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, player.size, player.size)
             // Player Dash Meter
-            ctx.shadowColor = "#669FB3"; // glow color
+            ctx.shadowColor = "#4DDC96"; // glow color
             ctx.shadowBlur = 10;
 
-            ctx.fillStyle = "#669FB3"
-            ctx.strokeStyle = "#669FB3"
+            ctx.fillStyle = "#4DDC96"
+            ctx.strokeStyle = "#4DDC96"
             if (player.dashCoolDown > 0) {
                 ctx.fillRect(player.x + (10 - 25) + globalOffsetX, player.y - 10 + globalOffsetY, 50 - player.dashCoolDown * 100, 5)
                 ctx.strokeRect(player.x - 15 + globalOffsetX, player.y - 10 + globalOffsetY, 50, 5)
@@ -1418,7 +1430,7 @@ function playerMovement(delta) {
 }
 
 function dash(delta) {
-    if ((keys[" "] ||keys["shift"]) && player.dashDirX == 0 && player.dashDirY == 0 && player.dashCoolDown <= 0 && player.health > 0 && currentBoss != undefined && !player.dashDisable) {
+    if ((keys[" "] ||keys["shift"]) && player.dashDirX == 0 && player.dashDirY == 0 && player.dashCoolDown <= 0 && player.health > 0 && currentBoss != undefined && !player.dashDisable && !player.moveDisable) {
         if (keys.w || keys.arrowup) player.dashDirY -= 1500
         if (keys.s || keys.arrowdown) player.dashDirY += 1500
         if (keys.a || keys.arrowleft) player.dashDirX -= 1500
@@ -1431,7 +1443,7 @@ function dash(delta) {
             player.x += player.dashDirX * delta
             player.y += player.dashDirY * delta
             /* betterTimeout((e) => { */
-            particles.push(new Particle(player.x + 5, player.y + 5, (Math.random() * Math.PI * 2), 100, .2, 10, "#007BBB"))
+            particles.push(new Particle(player.x + 5, player.y + 5, (Math.random() * Math.PI * 2), 100, .2, 10, "#00D96A"))
             /* }, 50 + (50 * i)) */
             player.dashFrame += delta
         } else {
@@ -1589,14 +1601,23 @@ function musicControl(delta) {
     musicFade(delta, "MONK", monkSong)
     musicFade(delta, "TSUNAMI", tsunamiSong)
     musicFade(delta, "HARBINGER", harbingerSong)
+
+	// Effect Volume Control
+
+	playerDeathSound.volume = effectVolume.value/100
+	playerDashSound.volume = effectVolume.value/100
+	diamondCollectSound.volume = effectVolume.value/100
+	bossHurtSound.volume = effectVolume.value/100
+	bossDeathSound.volume = effectVolume.value/100
+	bossPhaseSound.volume = effectVolume.value/100
 }
 
 function musicFade(delta, boss, song) {
     if (bossList[selectedBoss] == boss && song.volume <= 1) {
         song.play()
 
-        if (song.volume + delta/2 > musicVolume) {
-            song.volume = musicVolume
+        if (song.volume + delta/2 > musicVolume.value/100) {
+            song.volume = musicVolume.value/100
         } else {
             song.volume += delta/2
         }
