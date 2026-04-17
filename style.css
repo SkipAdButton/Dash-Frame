@@ -163,6 +163,63 @@ body {
     
 }
 
+#settingsMenu {
+	position: absolute;
+    width: 1360px;
+    height: 768px;
+    top: calc(50vh - 384px);
+    left: calc(50vw - 680px);
+    background-color: rgba(0, 0, 0, .75);
+    display: flex;
+    align-items: normal;
+    justify-content: center;
+    flex-direction: column;
+    opacity: 1;
+    transition: opacity .1s linear;
+}
+
+#settingsScreen {
+	display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    flex-direction: column;
+	padding: 100px; 
+    gap: 25px;
+}
+#settingsScreen h1{
+    color: white;
+    font-size: 73px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-decoration: underline dotted;
+}
+#settingsScreen h2{
+    color: white;
+    font-size: 85px;
+    font-style: italic;
+}
+#settingsScreen h2:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 135px;
+}
+#settingsScreen label{
+    color: white;
+    font-size: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+input[type="checkbox"] {
+  width: 30px;
+  height: 30px;
+  accent-color: slateblue;
+}
+.slider {
+	width: 300px;
+	accent-color: slateblue;
+	margin-top: -35px;
+}
+
 /* Colors */
 
 .neonBlue{
