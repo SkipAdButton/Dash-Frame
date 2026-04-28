@@ -1176,6 +1176,17 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
     keys[e.key.toLowerCase()] = false;
 });
+
+// Keys needed at start
+
+keys["w"] = false
+keys["a"] = false
+keys["s"] = false
+keys["d"] = false
+keys["arrowup"] = false
+keys["arrowdown"] = false
+keys["arrowleft"] = false
+keys["arrowright"] = false
 // Allows Audio
 document.addEventListener("click", (e) => {
     enableSound.play()
@@ -1316,12 +1327,28 @@ function draw() {
             ctx.fillStyle = player.color
             ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, player.size, player.size)
 
-			// Glasses
+			// Eyes
 			ctx.fillStyle = "#020"
-            ctx.fillRect(player.x + 2 - (keys["a"] * 2) + (keys["d"] * 2) + globalOffsetX, player.y + 5 - (keys["w"] * 2) + (keys["s"] * 2) + globalOffsetY, 6, 5)
-			ctx.fillRect(player.x + 12 - (keys["a"] * 2) + (keys["d"] * 2) + globalOffsetX, player.y + 5 - (keys["w"] * 2) + (keys["s"] * 2) + globalOffsetY, 6, 5)
+			ctx.beginPath();
+  			ctx.moveTo(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 6 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.lineTo(player.x + 9 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.lineTo(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+ 			ctx.fill();
+			ctx.fillRect(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 8 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 4)
 
-			 - (keys["a"] * 2) + (keys["d"] * 2)
+			ctx.fillStyle = "#020"
+			ctx.beginPath();
+  			ctx.moveTo(player.x + 18 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 6 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.lineTo(player.x + 11 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.lineTo(player.x + 18 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+ 			ctx.fill();
+			ctx.fillRect(player.x + 12 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 8 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 4)
+            // ctx.fillRect(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 5 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 5)
+			// ctx.fillRect(player.x + 12 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 5 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 5)
+
+			// ctx.fillStyle = "#fff"
+			// ctx.fillRect(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 5 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 3, 2.5)
+			// ctx.fillRect(player.x + 12 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 5 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 3, 2.5)
 
             ctx.fillStyle = `rgba(255, 255, 255, ${playerPulse})`
             ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, player.size, player.size)
@@ -1442,9 +1469,7 @@ function dash(delta) {
         if (player.dashFrame < .1) {
             player.x += player.dashDirX * delta
             player.y += player.dashDirY * delta
-            /* betterTimeout((e) => { */
             particles.push(new Particle(player.x + 5, player.y + 5, (Math.random() * Math.PI * 2), 100, .2, 10, "#00D96A"))
-            /* }, 50 + (50 * i)) */
             player.dashFrame += delta
         } else {
             player.dashing = false
