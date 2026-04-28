@@ -16,7 +16,8 @@
         <span id="startScreen">
             <h1><span class="neonBlue">DASH</span><span class="neonWhite">||</span><span class="neonPurple">FRAME</span></h1>
             <h2 onclick="start()">START</h2>
-            <h2 onclick="switchScreen()" id="htp">HOW TO PLAY</h2>
+            <h2 onclick="switchScreen('how-to-play')" id="htp">HOW TO PLAY</h2>
+			<h2 onclick="switchScreen('settings')" id="htp">SETTINGS</h2>
             <div>
                 <h3>CHALLENGER</h3>
                 <h4 id="bossSelect" onclick="cycleBoss(1)">TUTORIAL</h4>
@@ -24,6 +25,7 @@
             </div>
         </span>
     </div>
+
     <div id="htpMenu" class="hide">
         <span id="htpScreen">
             <div id="htpq1">
@@ -32,11 +34,27 @@
                 <h3 onclick="guide(2)">DASHING</h3>
                 <h3 onclick="guide(3)">DIAMONDS</h3>
                 <h3 onclick="guide(4)">BOSSES</h3>
-                <h2 onclick="switchScreen()">BACK</h2>
+                <h2 onclick="switchScreen('main')">BACK</h2>
             </div>
             <div id="htpq2">Click one of the tabs to learn more</div>
         </span>
     </div>
+
+	<div id="settingsMenu" class="hide">
+        <span id="settingsScreen">
+                <h1 class="neonWhite">SETTINGS</h1>
+				<div>
+                	<label for="skipIntros">SKIP INTROS</label>
+					<input type="checkbox" name="skipIntros" id="skipIntros">
+				</div>
+				<label for="musicVolume">MUSIC VOLUME</label>
+				<input type="range" min="0" max="100" name="musicVolume" id="musicVolume" class="slider" value="100">
+				<label for="effectVolume">EFFECT VOLUME</label>
+				<input type="range" min="0" max="100" name="effectVolume" id="effectVolume" class="slider" value="100">
+
+                <h2 onclick="switchScreen('main')">BACK</h2>
+        </span>
+    </div>
 </body>
 
-</html>
+</html>;
