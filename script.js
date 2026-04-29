@@ -6,13 +6,13 @@ class Player {
         this.speed = speed
         this.x = canvas.width/4 - 10
         this.y = canvas.height/2 - 10
-        this.color = "#00FF7D"
-		// "#00BFFF" Main
-		// "#007BBB" Particals
-		// "#669FB3" Dash
-		// "#00FF7D" Main
-		// "#00D96A" Partical
-		// "#4DDC96" Dash
+        
+		this.color = {
+			r: 0,
+			g: 255,
+			b: 125,
+		}
+
 
         this.dashing = false
         this.dashCoolDown = 0
@@ -36,9 +36,8 @@ class Player {
 		currentBoss.quip("playerDeath")
         end()
         for (let i = 0; i < 10; i++) {
-            particles.push(new Particle(this.x + 5, this.y + 5, (Math.random() * Math.PI * 2), 200, .3, 10, "#00D96A"))
+            particles.push(new Particle(this.x + 5, this.y + 5, (Math.random() * Math.PI * 2), 200, .3, 10, `rgb(${player.color.r - 25}, ${player.color.g - 25}, ${player.color.b - 25})`))
         }
-		console.log("I ran")
 	}
 }
 // Versatile
@@ -1118,6 +1117,8 @@ const htpMenu = document.getElementById("htpMenu")
 const settingsMenu = document.getElementById("settingsMenu")
 const attemptCounter = document.getElementById("attemptCounter")
 const htpq2 = document.getElementById("htpq2")
+const gameLookOption = document.getElementById("gameLookOption")
+const customizeMenu = document.getElementById("customizeMenu")
 const bossList = [
     "LISTSTART", "TUTORIAL", "CHARGER", "BEYBLADE", "STARFISH", "RINGMASTER", "RAINMAN", "MONK", "TSUNAMI", "HARBINGER", "LISTEND"
 ]
@@ -1150,6 +1151,10 @@ const rainManSong = new Audio("audio/theoryOfEverything2.mp3")
 const monkSong = new Audio("audio/freedomOftrance.mp3")
 const tsunamiSong = new Audio("audio/thermodynamix.mp3")
 const harbingerSong = new Audio("audio/evilLoop.mp3")
+
+const playerRed = document.getElementById("playerRed")
+const playerGreen = document.getElementById("playerGreen")
+const playerBlue = document.getElementById("playerBlue")
 
 chargerSong.volume = 0
 // Vars
@@ -1267,15 +1272,33 @@ function switchScreen(screen) {
 	if (screen == "main") {
 		menu.classList.remove("hide")
         htpMenu.classList.add("hide")
+		customizeMenu.classList.add("hide")
 		settingsMenu.classList.add("hide")
 	} else if (screen == "how-to-play"){
 		menu.classList.add("hide")
         htpMenu.classList.remove("hide")
+		customizeMenu.classList.add("hide")
 		settingsMenu.classList.add("hide")
 	} else if (screen == "settings") {
 		menu.classList.add("hide")
         htpMenu.classList.add("hide")
+		customizeMenu.classList.add("hide")
 		settingsMenu.classList.remove("hide")
+	} else if (screen == "customize") {
+		menu.classList.add("hide")
+        htpMenu.classList.add("hide")
+		settingsMenu.classList.add("hide")
+		customizeMenu.classList.remove("hide")
+	}
+}
+
+function gameLook() {
+	if (canvas.classList.contains("pixelate")) {
+		canvas.classList.remove("pixelate")
+		gameLookOption.textContent = "NORMAL"
+	} else {
+		canvas.classList.add("pixelate")
+		gameLookOption.textContent = "PIXEL"
 	}
 }
 
@@ -1321,14 +1344,14 @@ function draw() {
     // Player
     if (currentBoss != undefined) {
         if (player.health > 0) {
-            ctx.shadowColor = player.color; // glow color
+            ctx.shadowColor = `rgb(${player.color.r}, ${player.color.g}, ${player.color.b})`; // glow color
             ctx.shadowBlur = player.size;
 
-            ctx.fillStyle = player.color
+            ctx.fillStyle = `rgb(${player.color.r}, ${player.color.g}, ${player.color.b})`
             ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, player.size, player.size)
 
 			// Eyes
-			ctx.fillStyle = "#020"
+			ctx.fillStyle = "#222"
 			ctx.beginPath();
   			ctx.moveTo(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 6 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
   			ctx.lineTo(player.x + 9 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
@@ -1336,34 +1359,58 @@ function draw() {
  			ctx.fill();
 			ctx.fillRect(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 8 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 4)
 
-			ctx.fillStyle = "#020"
+			ctx.fillStyle = "#222"
 			ctx.beginPath();
   			ctx.moveTo(player.x + 18 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 6 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
   			ctx.lineTo(player.x + 11 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
   			ctx.lineTo(player.x + 18 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
  			ctx.fill();
 			ctx.fillRect(player.x + 12 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 8 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 4)
-            // ctx.fillRect(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 5 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 5)
-			// ctx.fillRect(player.x + 12 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 5 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 5)
 
-			// ctx.fillStyle = "#fff"
-			// ctx.fillRect(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 5 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 3, 2.5)
-			// ctx.fillRect(player.x + 12 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 5 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 3, 2.5)
+			ctx.fillStyle = `rgb(${player.color.r}, ${player.color.g}, ${player.color.b})`
+            ctx.fillRect(player.x + 9 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 2 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 2, player.size - 4)
 
             ctx.fillStyle = `rgba(255, 255, 255, ${playerPulse})`
             ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, player.size, player.size)
             // Player Dash Meter
-            ctx.shadowColor = "#4DDC96"; // glow color
+            ctx.shadowColor = `rgb(${player.color.r - 10}, ${player.color.g - 10}, ${player.color.b - 10})`; // glow color
             ctx.shadowBlur = 10;
 
-            ctx.fillStyle = "#4DDC96"
-            ctx.strokeStyle = "#4DDC96"
+            ctx.fillStyle = `rgb(${player.color.r - 10}, ${player.color.g - 10}, ${player.color.b - 10})`
+            ctx.strokeStyle = `rgb(${player.color.r - 10}, ${player.color.g - 10}, ${player.color.b - 10})`
             if (player.dashCoolDown > 0) {
                 ctx.fillRect(player.x + (10 - 25) + globalOffsetX, player.y - 10 + globalOffsetY, 50 - player.dashCoolDown * 100, 5)
                 ctx.strokeRect(player.x - 15 + globalOffsetX, player.y - 10 + globalOffsetY, 50, 5)
             }
         }
     }
+	if (!customizeMenu.classList.contains("hide")) {
+			ctx.fillStyle = `rgb(${player.color.r}, ${player.color.g}, ${player.color.b})`
+            ctx.fillRect(canvas.width * 3 / 5, canvas.height/2 - player.size * 15 / 2, player.size * 15, player.size * 15)
+
+			// Eyes
+			ctx.fillStyle = "#222"
+			ctx.beginPath();
+  			ctx.moveTo(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 6 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.lineTo(player.x + 9 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.lineTo(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+ 			ctx.fill();
+			ctx.fillRect(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 8 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 4)
+
+			ctx.fillStyle = "#222"
+			ctx.beginPath();
+  			ctx.moveTo(player.x + 18 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 6 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.lineTo(player.x + 11 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.lineTo(player.x + 18 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+ 			ctx.fill();
+			ctx.fillRect(player.x + 12 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 8 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 4)
+
+			ctx.fillStyle = `rgb(${player.color.r}, ${player.color.g}, ${player.color.b})`
+            ctx.fillRect(player.x + 9 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 2 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 2, player.size - 4)
+
+            ctx.fillStyle = `rgba(255, 255, 255, ${playerPulse})`
+            ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, player.size, player.size)
+	}
     // Projectiles 
     for (let i = 0; i < projectiles.length; i++) {
         ctx.shadowColor = currentBoss.color; // glow color
@@ -1469,7 +1516,7 @@ function dash(delta) {
         if (player.dashFrame < .1) {
             player.x += player.dashDirX * delta
             player.y += player.dashDirY * delta
-            particles.push(new Particle(player.x + 5, player.y + 5, (Math.random() * Math.PI * 2), 100, .2, 10, "#00D96A"))
+            particles.push(new Particle(player.x + 5, player.y + 5, (Math.random() * Math.PI * 2), 100, .2, 10, `rgb(${player.color.r - 25}, ${player.color.g - 25}, ${player.color.b - 25})`))
             player.dashFrame += delta
         } else {
             player.dashing = false
@@ -1687,6 +1734,9 @@ function loop(time) {
     musicControl(delta)
     pickupDiamond()
     projectileCol()
+	player.color.r = playerRed.value
+	player.color.g = playerGreen.value
+	player.color.b = playerBlue.value
     if (keys["escape"] && currentBoss != undefined) {
         end()
     }
