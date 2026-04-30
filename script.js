@@ -1391,25 +1391,22 @@ function draw() {
 			// Eyes
 			ctx.fillStyle = "#222"
 			ctx.beginPath();
-  			ctx.moveTo(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 6 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
-  			ctx.lineTo(player.x + 9 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
-  			ctx.lineTo(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.moveTo(canvas.width * 3 / 5 + 30, canvas.height/2 - player.size * 15 / 2 + 90);
+  			ctx.lineTo(canvas.width * 3 / 5 + 135, canvas.height/2 - player.size * 15 / 2 + 135);
+  			ctx.lineTo(canvas.width * 3 / 5 + 30, canvas.height/2 - player.size * 15 / 2 + 135);
  			ctx.fill();
-			ctx.fillRect(player.x + 2 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 8 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 4)
+			ctx.fillRect(canvas.width * 3 / 5 + 30, canvas.height/2 - player.size * 15 / 2 + 120, 90, 60)
 
 			ctx.fillStyle = "#222"
 			ctx.beginPath();
-  			ctx.moveTo(player.x + 18 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 6 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
-  			ctx.lineTo(player.x + 11 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
-  			ctx.lineTo(player.x + 18 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 9 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY);
+  			ctx.moveTo(canvas.width * 3 / 5 + 270, canvas.height/2 - player.size * 15 / 2 + 90);
+  			ctx.lineTo(canvas.width * 3 / 5 + 165, canvas.height/2 - player.size * 15 / 2 + 135);
+  			ctx.lineTo(canvas.width * 3 / 5 + 270, canvas.height/2 - player.size * 15 / 2 + 135);
  			ctx.fill();
-			ctx.fillRect(player.x + 12 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 8 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 6, 4)
+			ctx.fillRect(canvas.width * 3 / 5 + 180, canvas.height/2 - player.size * 15 / 2 + 120, 90, 60)
 
 			ctx.fillStyle = `rgb(${player.color.r}, ${player.color.g}, ${player.color.b})`
-            ctx.fillRect(player.x + 9 - ((keys["a"] || keys["arrowleft"]) * 2) + ((keys["d"] || keys["arrowright"]) * 2) + globalOffsetX, player.y + 2 - ((keys["w"] || keys["arrowup"]) * 2) + ((keys["s"] || keys["arrowdown"]) * 2) + globalOffsetY, 2, player.size - 4)
-
-            ctx.fillStyle = `rgba(255, 255, 255, ${playerPulse})`
-            ctx.fillRect(player.x + globalOffsetX, player.y + globalOffsetY, player.size, player.size)
+            ctx.fillRect(canvas.width * 3 / 5 + 120, canvas.height/2 - player.size * 15 / 2 + 30, 60, player.size * 15 - 60)
 	}
     // Projectiles 
     for (let i = 0; i < projectiles.length; i++) {
