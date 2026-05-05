@@ -48,12 +48,29 @@ body {
     transform: scaleX(1.5);
     /* text-decoration: underline; */
 }
-#startScreen h2{
+.menuButton{
     color: white;
-    font-size: 60px;
+    font-size: 40px;
     margin-top: 10px;
     margin-bottom: 10px;
     font-style: italic;
+}
+.menuButton:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 80px;
+}
+.menuButtonLarge{
+    color: white;
+    font-size: 125px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+.menuButtonLarge:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 150px;
 }
 #startScreen #htp {
     color: white;
@@ -74,11 +91,7 @@ body {
     font-style: italic;
     font-size: 40px;
 }
-#startScreen h2:hover{
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 115px;
-}
+
 #startScreen h4:hover{
     text-decoration: underline;
     cursor: pointer;
@@ -228,6 +241,17 @@ input[type="checkbox"] {
   width: 30px;
   height: 30px;
   accent-color: slateblue;
+}
+input[type="text"] {
+  	color: grey;
+    font-size: 50px;
+	width: 30vw;
+	background-color: rgba(0, 0, 0, 0);
+	border: 0px solid; 
+	text-align: left;
+}
+input:focus {
+  	outline: none;
 }
 .slider {
 	width: 300px;
