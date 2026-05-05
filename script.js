@@ -12,6 +12,7 @@ class Player {
 			g: 255,
 			b: 125,
 		}
+		this.name = "John Bates"
 
 
         this.dashing = false
@@ -172,8 +173,8 @@ class Charger {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("Woah, woah! Slow your roll there Traveler.", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("Woah, woah! Slow your roll there Traveler.", 500, 50, 500, 10)
+            bossQuip(`Woah, woah! Slow your roll there ${player.name}`, 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc(`Woah, woah! Slow your roll there ${player.name}.`, 500, 50, 500, 10)
 
             bossQuip("I can't let you go any further.", this.talkTime + 250, 50, 500, 10)
             this.talkTime = quipTimeCalc("I can't let you get go further.", this.talkTime + 250, 50, 500, 10)
@@ -266,8 +267,8 @@ class Ringmaster {
             bossQuip("I will be defying death...", this.talkTime + 250, 100, 500, 10)
             this.talkTime = quipTimeCalc("I will be defying death...", this.talkTime + 250, 100, 500, 10)
 
-            bossQuip("Against the Traveler!", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("Against the Traveler!", this.talkTime + 250, 50, 500, 10)
+            bossQuip(`Against the ${player.name}!`, this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc(`Against the ${player.name}!`, this.talkTime + 250, 50, 500, 10)
 
             bossQuip("Time to put on a show!", this.talkTime + 250, 75, 500, 10)
             this.talkTime = quipTimeCalc("Time to put on a show!", this.talkTime + 250, 75, 500, 10)
@@ -355,8 +356,8 @@ class Beyblade {
             bossQuip("Yeah! I'm on a winning streak right now!", 500, 50, 500, 10)
             this.talkTime = quipTimeCalc("Yeah! I'm on a winning streak right now!", 500, 50, 500, 10)
 
-            bossQuip("You wanna go up next, Traveler?", this.talkTime + 250, 50, 500, 10)
-            this.talkTime = quipTimeCalc("You wanna go up next, Traveler?", this.talkTime + 250, 50, 500, 10)
+            bossQuip(`You wanna go up next, ${player.name}?`, this.talkTime + 250, 50, 500, 10)
+            this.talkTime = quipTimeCalc(`You wanna go up next, ${player.name}?`, this.talkTime + 250, 50, 500, 10)
 
             bossQuip("Let's see if you can hang with the big dogs.", this.talkTime + 250, 50, 500, 10)
             this.talkTime = quipTimeCalc("Let's see if you can hang with the big dogs.", this.talkTime + 250, 50, 500, 10)
@@ -443,8 +444,8 @@ class Rainman {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("I have shown you no aggression, Traveler.", 500, 60, 500, 10)
-            this.talkTime = quipTimeCalc("I have shown you no aggression, Traveler.", 500, 60, 500, 10)
+            bossQuip(`I have shown you no aggression, ${player.name}.`, 500, 60, 500, 10)
+            this.talkTime = quipTimeCalc(`I have shown you no aggression, ${player.name}.`, 500, 60, 500, 10)
 
             bossQuip("And still, you bring brutality and terror to my home.", this.talkTime + 250, 60, 500, 10)
             this.talkTime = quipTimeCalc("And still, you bring brutality and terror to my home.", this.talkTime + 250, 60, 500, 10)
@@ -474,8 +475,6 @@ class Rainman {
 
 class Tsunami {
     constructor(maxHealth, speed, fireRate, fireRate2) {
-        console.log(fireRate)
-        console.log(fireRate2)
         this.maxHealth = maxHealth;
         this.health = maxHealth
         this.speed = speed;
@@ -566,8 +565,8 @@ class Tsunami {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("Traveler...", 500, 100, 500, 10)
-            this.talkTime = quipTimeCalc("Traveler...", 500, 100, 500, 10)
+            bossQuip(`${player.name}...`, 500, 100, 500, 10)
+            this.talkTime = quipTimeCalc(`${player.name}...`, 500, 100, 500, 10)
 
             bossQuip("What a bitter name...", this.talkTime + 250, 75, 500, 10)
             this.talkTime = quipTimeCalc("What a bitter name...", this.talkTime + 250, 75, 500, 10)
@@ -650,8 +649,8 @@ class Starfish {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("Fixin' for a standoff, Traveler?", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("Fixin' for a standoff, Traveler?", 500, 50, 500, 10)
+            bossQuip(`Fixin' for a standoff, ${player.name}?`, 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc(`Fixin' for a standoff, ${player.name}`, 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -1058,8 +1057,8 @@ class Monk {
             player.holdRight = false
             spawnDiamond()
 
-            bossQuip("Join the light, Traveler.", 500, 50, 500, 10)
-            this.talkTime = quipTimeCalc("Join the light, Traveler.", 500, 50, 500, 10)
+            bossQuip(`Join the light, ${player.name}.`, 500, 50, 500, 10)
+            this.talkTime = quipTimeCalc(`Join the light, ${player.name}.`, 500, 50, 500, 10)
         } else {
             this.talkTime = 0
             this.halt = true
@@ -1071,8 +1070,8 @@ class Monk {
                 player.holdRight = false
             }, 1000)
 
-            bossQuip("Hello, Traveler.", 500, 75, 500, 10)
-            this.talkTime = quipTimeCalc("Hello, Traveler.", 500, 75, 500, 10)
+            bossQuip(`Hello, ${player.name}.`, 500, 75, 500, 10)
+            this.talkTime = quipTimeCalc(`Hello, ${player.name}.`, 500, 75, 500, 10)
 
             bossQuip("You have made quite the mess.", this.talkTime + 250, 50, 500, 10)
             this.talkTime = quipTimeCalc("You have made quite the mess.", this.talkTime + 250, 50, 500, 10)
@@ -1119,6 +1118,7 @@ const attemptCounter = document.getElementById("attemptCounter")
 const htpq2 = document.getElementById("htpq2")
 const gameLookOption = document.getElementById("gameLookOption")
 const customizeMenu = document.getElementById("customizeMenu")
+const playerName = document.getElementById("playerName")
 const bossList = [
     "LISTSTART", "TUTORIAL", "CHARGER", "BEYBLADE", "STARFISH", "RINGMASTER", "RAINMAN", "MONK", "TSUNAMI", "HARBINGER", "LISTEND"
 ]
@@ -1238,6 +1238,7 @@ function start() { // IMPORTANT
 	} else {
 		player.dashDisable = false
 	}
+
     bossInfo[selectedBoss].attempts += 1
     attemptCounter.innerHTML = bossInfo[selectedBoss].attempts
     player.health = 1
@@ -1246,6 +1247,9 @@ function start() { // IMPORTANT
     projectiles.splice(0, projectiles.length)
     menu.classList.add("hide")
     diamonds.splice(0, diamonds.length)
+	if (playerName.value.trim() == "") {
+		playerName.value = "Traveler"
+	}
     bossQuipText = ""
     currentBoss.intro()
 }
@@ -1734,6 +1738,7 @@ function loop(time) {
 	player.color.r = playerRed.value
 	player.color.g = playerGreen.value
 	player.color.b = playerBlue.value
+	player.name = playerName.value.trim()
     if (keys["escape"] && currentBoss != undefined) {
         end()
     }
