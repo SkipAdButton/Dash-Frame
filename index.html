@@ -15,14 +15,15 @@
     <div id="menu">
         <span id="startScreen">
             <h1><span class="neonBlue">DASH</span><span class="neonWhite">||</span><span class="neonPurple">FRAME</span></h1>
-            <h2 onclick="start()">START</h2>
-            <h2 onclick="switchScreen('how-to-play')" id="htp">HOW TO PLAY</h2>
-			<h2 onclick="switchScreen('settings')" id="htp">SETTINGS</h2>
+            <h2 onclick="start()" class="menuButtonLarge">START</h2>
             <div>
                 <h3>CHALLENGER</h3>
                 <h4 id="bossSelect" onclick="cycleBoss(1)">TUTORIAL</h4>
                 <h3>ATTEMPTS: <span id="attemptCounter">0</span></h3>
             </div>
+            <h2 onclick="switchScreen('how-to-play')" id="htp" class="menuButton">HOW TO PLAY</h2>
+			<h2 onclick="switchScreen('settings')" class="menuButton">SETTINGS</h2>
+			<h2 onclick="switchScreen('customize')" class="menuButton">CUSTOMIZE</h2>
         </span>
     </div>
 
@@ -51,10 +52,31 @@
 				<input type="range" min="0" max="100" name="musicVolume" id="musicVolume" class="slider" value="100">
 				<label for="effectVolume">EFFECT VOLUME</label>
 				<input type="range" min="0" max="100" name="effectVolume" id="effectVolume" class="slider" value="100">
+				<div>
+                	<h3>GAME LOOK</h3>
+                	<h4 id="gameLookOption" onclick="gameLook()">NORMAL</h4>
+            	</div>
 
                 <h2 onclick="switchScreen('main')">BACK</h2>
         </span>
     </div>
+	<div id="customizeMenu" class="hide">
+        <span id="customizeScreen">
+                <h1 class="neonWhite">CUSTOMIZE</h1>
+				<label for="playerRed">RED</label>
+				<input type="range" min="0" max="255" name="playerRed" id="playerRed" class="slider" value="0">
+				<label for="playerGreen">GREEN</label>
+				<input type="range" min="0" max="255" name="playerGreen" id="playerGreen" class="slider" value="255">
+				<label for="playerBlue">BLUE</label>
+				<input type="range" min="0" max="255" name="playerBlue" id="playerBlue" class="slider" value="125">
+				<div>
+					<label for="playerName">CHANGE NAME:</label>
+					<input type="text" value="Traveler" id="playerName" maxlength=12>
+				</div>
+
+                <h2 onclick="switchScreen('main')">BACK</h2>
+		</span>
+	</div>
 </body>
 
-</html>;
+</html>

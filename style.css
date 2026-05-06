@@ -9,6 +9,7 @@
 }
 body {
     background-color: #000;
+	overflow: hidden;
 }
 #canvas {
     position: absolute;
@@ -36,7 +37,7 @@ body {
     align-items: flex-start;
     justify-content: space-evenly;
     flex-direction: column;
-    gap: 25px;
+    gap: 1px;
 }
 #startScreen h1{
     color: white;
@@ -47,12 +48,29 @@ body {
     transform: scaleX(1.5);
     /* text-decoration: underline; */
 }
-#startScreen h2{
+.menuButton{
     color: white;
-    font-size: 75px;
+    font-size: 40px;
     margin-top: 10px;
     margin-bottom: 10px;
     font-style: italic;
+}
+.menuButton:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 80px;
+}
+.menuButtonLarge{
+    color: white;
+    font-size: 125px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+.menuButtonLarge:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 150px;
 }
 #startScreen #htp {
     color: white;
@@ -73,11 +91,7 @@ body {
     font-style: italic;
     font-size: 40px;
 }
-#startScreen h2:hover{
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 115px;
-}
+
 #startScreen h4:hover{
     text-decoration: underline;
     cursor: pointer;
@@ -209,15 +223,102 @@ body {
     margin-bottom: 10px;
     font-style: italic;
 }
+#settingsScreen h3{
+    color: white;
+    text-decoration: underline;
+}
+#settingsScreen h4{
+    color: white;
+    font-style: italic;
+    font-size: 40px;
+}
+#settingsScreen h4:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 70px;
+}
 input[type="checkbox"] {
   width: 30px;
   height: 30px;
   accent-color: slateblue;
 }
+input[type="text"] {
+  	color: grey;
+    font-size: 50px;
+	width: 30vw;
+	background-color: rgba(0, 0, 0, 0);
+	border: 0px solid; 
+	text-align: left;
+}
+input:focus {
+  	outline: none;
+}
 .slider {
 	width: 300px;
 	accent-color: slateblue;
 	margin-top: -35px;
+}
+
+#customizeMenu {
+	position: absolute;
+    width: 1360px;
+    height: 768px;
+    top: calc(50vh - 384px);
+    left: calc(50vw - 680px);
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: normal;
+    justify-content: center;
+    flex-direction: column;
+    opacity: 1;
+    transition: opacity .1s linear;
+}
+
+#customizeScreen {
+	display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    flex-direction: column;
+	padding: 100px; 
+    gap: 25px;
+}
+
+#customizeScreen h1{
+    color: white;
+    font-size: 73px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-decoration: underline dotted;
+}
+#customizeScreen h2{
+    color: white;
+    font-size: 85px;
+    font-style: italic;
+}
+#customizeScreen h2:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 135px;
+}
+#customizeScreen label{
+    color: white;
+    font-size: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+#customizeScreen h3{
+    color: white;
+    text-decoration: underline;
+}
+#customizeScreen h4{
+    color: white;
+    font-style: italic;
+    font-size: 40px;
+}
+#customizeScreen h4:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 70px;
 }
 
 /* Colors */
@@ -233,4 +334,8 @@ input[type="checkbox"] {
 .neonPurple{
     color: #FE019A;
     text-shadow: 0 0 10px #FE019A;
+}
+
+.pixelate {
+	image-rendering: pixelated !important; 
 }
